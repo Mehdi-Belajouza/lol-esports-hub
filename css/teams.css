@@ -1,0 +1,356 @@
+
+    /* Hero Section */
+    .hero-section {
+        margin-top: 80px;
+        background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 50%, #0D0D0D 100%);
+        position: relative;
+        overflow: hidden;
+        padding: 3rem 0;
+    }
+
+    .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: var(--gold-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-gray);
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Filter Section */
+    .filter-section {
+        background: var(--dark-secondary);
+        padding: 2rem 0;
+        border-bottom: 1px solid var(--border-dark);
+    }
+
+    .filter-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .filter-btn {
+        padding: 0.8rem 1.5rem;
+        background: transparent;
+        border: 2px solid var(--border-gold);
+        color: var(--text-gray);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+        background: var(--gold-gradient);
+        color: var(--dark-primary);
+        border-color: var(--primary-gold);
+    }
+
+    /* Teams Section */
+    .teams-section {
+        padding: 4rem 0;
+        background: var(--dark-primary);
+    }
+
+    .section-container {
+        max-width: 1650px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .teams-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 450px)); /* Fixed max column width */
+        gap: 2rem;
+        margin-bottom: 3rem;
+        justify-content: center; /* Center the grid items horizontally */
+    }
+
+    .team-card {
+        background: var(--white-primary);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        border: 1px solid var(--border-gold);
+        cursor: pointer;
+    }
+
+    .team-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--primary-gold);
+        box-shadow: 0 20px 40px rgba(212, 175, 55, 0.25);
+    }
+
+    .team-header {
+        background: var(--gold-gradient);
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .team-logo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: var(--white-primary); /* Keeps logo readable */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--primary-gold);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .team-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+
+    .team-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .team-founded {
+        color: var(--dark-primary);
+        opacity: 0.8;
+        font-size: 0.9rem;
+    }
+
+    .team-body {
+        padding: 1.5rem;
+    }
+
+    .team-disciplines {
+        margin-bottom: 1rem;
+    }
+
+    .disciplines-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+
+    .disciplines-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .discipline-badge {
+        background: var(--gold-gradient);
+        color: var(--dark-primary);
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .team-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.2rem; /* Was 2rem */
+        padding: 0.8rem;  
+        background: var(--white-secondary);
+        border-radius: 8px;
+    }
+
+    .team-stat {
+        text-align: center;
+    }
+
+    .team-stat-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary-gold);
+    }
+
+    .team-stat-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
+    .team-players {
+        margin-top: 1rem;
+    }
+
+    .players-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+
+    .players-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.8rem;
+    }
+
+    .player-card {
+        background: var(--white-secondary);
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        transition: all 0.2s ease;
+    }
+
+    .player-card:hover {
+        background: rgba(212, 175, 55, 0.1);
+    }
+
+    .player-name {
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 0.9rem;
+    }
+
+    .player-role {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+    }
+
+    /*Team Socials */
+    .team-socials {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    }
+
+    .team-socials .social-link img {
+        width: 20px;
+        height: 20px;
+        transition: transform 0.2s ease;
+    }
+
+    .team-socials .social-link:hover img {
+        transform: scale(1.2);
+    }
+
+
+    /* Team Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.8);
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+        background: var(--white-primary);
+        margin: 5% auto;
+        padding: 0;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 600px; /* Reduced max-width */
+        max-height: 70vh;  /* Slightly smaller height */
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        border: 2px solid var(--primary-gold);
+    }
+
+    .modal-header {
+        background: var(--gold-gradient);
+        padding: 1.5rem 1rem 1rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .modal-team-logo {
+        width: 120px;              /* Larger logo */
+        height: 120px;
+        background: var(--white-primary);
+        border-radius: 50%;
+        margin: 0 auto 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.8rem;         /* Bigger font inside logo */
+        font-weight: 900;
+        color: var(--primary-gold);
+        border: 4px solid var(--primary-gold); /* More golden pop */
+        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4); /* Glow effect */
+    }
+
+    .modal-body {
+        padding: 1.5rem 1.5rem 2rem;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+
+    .close {
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        color: var(--dark-primary);
+        font-size: 2rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        opacity: 0.7;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        
+        .teams-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .filter-container {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .nav-container {
+            padding: 1rem;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .nav-links {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+    

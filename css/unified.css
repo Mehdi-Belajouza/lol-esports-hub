@@ -1,0 +1,370 @@
+/* ========================================
+   UNIFIED CSS VARIABLES & BASE STYLES
+   ======================================== */
+
+:root {
+
+    /* Primary Color Palette */
+    --primary-gold: #D4AF37;
+    --accent-gold: #FFD700;
+    --text-gold: #D4AF37;
+    --league-red: #ff4655;
+    --green-accent: #00D4AA;
+    --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+    --league-gradient: linear-gradient(135deg, #ff4655 0%, #e03b4d 100%);
+    
+    /* Dark Theme Colors */
+    --dark-primary: #0D0D0D;
+    --dark-secondary: #1A1A1A;
+    --dark-tertiary: #262626;
+    
+    /* Text Colors */
+    --text-white: #FFFFFF;
+    --text-gray: #CCCCCC;
+    --text-muted: #999999;
+    --text-dark: #333333;
+    --white-primary: #FFFFFF;
+    --white-secondary: #F5F5F5;
+    /* Border Colors */
+    --border-gold: rgba(212, 175, 55, 0.3);
+    --border-dark: rgba(255, 255, 255, 0.1);
+    --border-league: rgba(255, 70, 85, 0.3);
+    
+    /* Shadows and Effects */
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.25);
+    --shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.3);
+    --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.4);
+    
+    /* Transitions */
+    --transition-fast: all 0.3s ease;
+    --transition-medium: all 0.5s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: var(--dark-primary);
+    color: var(--text-white);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ========================================
+   UNIFIED NAVIGATION STYLES
+   ======================================== */
+
+.main-nav {
+    background: rgba(13, 13, 13, 0.95);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border-gold);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 0;
+}
+
+/* League-specific navigation override */
+.main-nav.league-nav {
+    border-bottom: 1px solid var(--border-league);
+    position: sticky;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-white);
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: var(--transition-fast);
+}
+
+.logo:hover {
+    color: var(--primary-gold);
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-gold);
+    transition: var(--transition-fast);
+}
+
+.logo:hover .logo-img {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-link,
+.nav-player {
+    color: var(--text-gray);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: var(--transition-fast);
+    position: relative;
+    font-weight: 500;
+}
+
+.nav-link:hover,
+.nav-player:hover {
+    color: var(--primary-gold);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+/* League-specific link styling */
+.league-nav .nav-link:hover,
+.league-nav .nav-player:hover {
+    color: var(--league-red);
+    background: rgba(255, 70, 85, 0.1);
+}
+
+.nav-search {
+    display: flex;
+    align-items: center;
+    background: var(--dark-secondary);
+    border: 1px solid var(--border-gold);
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    transition: var(--transition-fast);
+}
+
+.nav-search:focus-within {
+    border-color: var(--primary-gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+/* League-specific search styling */
+.league-nav .nav-search {
+    border-color: var(--border-league);
+}
+
+.league-nav .nav-search:focus-within {
+    border-color: var(--league-red);
+    box-shadow: 0 0 10px rgba(255, 70, 85, 0.3);
+}
+
+.nav-search input,
+#playerSearch {
+    background: none;
+    border: none;
+    color: var(--text-white);
+    outline: none;
+    width: 200px;
+    font-size: 0.9rem;
+}
+
+.nav-search input::placeholder,
+#playerSearch::placeholder {
+    color: var(--text-muted);
+}
+
+.nav-search button {
+    background: none;
+    border: none;
+    color: var(--primary-gold);
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: var(--transition-fast);
+}
+
+.nav-search button:hover {
+    color: var(--accent-gold);
+}
+
+.league-nav .nav-search button {
+    color: var(--league-red);
+}
+
+.league-nav .nav-search button:hover {
+    color: #ff6b7a;
+}
+
+/* ========================================
+   UNIFIED SECTION TITLES
+   ======================================== */
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--text-white);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--gold-gradient);
+    border-radius: 2px;
+}
+
+/* League-specific section titles */
+.league-page .section-title {
+    font-size: 1.8rem;
+    text-align: left;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--league-red);
+    display: inline-block;
+}
+
+.league-page .section-title::after {
+    display: none;
+}
+
+/* ========================================
+   UNIFIED CARD STYLES
+   ======================================== */
+
+.card-base {
+    background: var(--dark-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-dark);
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-light);
+}
+
+.card-base:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary-gold);
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.15);
+}
+
+/* League-specific cards */
+.league-page .card-base:hover {
+    border-color: var(--league-red);
+    box-shadow: 0 10px 25px rgba(255, 70, 85, 0.15);
+}
+
+/* ========================================
+   UNIFIED BUTTON STYLES
+   ======================================== */
+
+.btn-primary {
+    background: var(--gold-gradient);
+    color: var(--dark-primary);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid var(--primary-gold);
+    color: var(--primary-gold);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-gold);
+    color: var(--dark-primary);
+    transform: translateY(-2px);
+}
+
+/* League-specific buttons */
+.league-page .btn-primary {
+    background: var(--league-gradient);
+    color: var(--text-white);
+}
+
+.league-page .btn-secondary {
+    border-color: var(--league-red);
+    color: var(--league-red);
+}
+
+.league-page .btn-secondary:hover {
+    background: var(--league-red);
+    color: var(--text-white);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .nav-search input,
+    #playerSearch {
+        width: 150px;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .league-page .section-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-container {
+        padding: 0.75rem;
+    }
+    
+    .logo {
+        font-size: 1rem;
+    }
+    
+    .logo-img {
+        width: 32px;
+        height: 32px;
+    }
+}

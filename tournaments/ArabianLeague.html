@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arabian League Players | LoL Player DNA</title>
+  <link rel="stylesheet" href="../css/unified.css">
+  <link rel="stylesheet" href="../css/table.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- Loading Animation -->
+  <div class="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <nav class="main-nav league-nav">
+    <div class="nav-container">
+        <a href="#" class="logo">
+            <img src="https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/5/59/SK_Telecom_T1logo_square.png" alt="LoL DNA Logo" class="logo-img">
+            <span>LoL Player DNA - Arabian League</span>
+        </a>
+        <div class="nav-links">
+            <div class="nav-search">
+                <input type="text" id="playerSearch" placeholder="Search player...">
+                <button onclick="searchPlayer()"><i class="fas fa-search"></i></button>
+            </div>
+            <a href="../games/league-of-legends.html" class="nav-player">Main Page</a>
+            <a href="#" class="nav-player">Players Table</a>
+            <a href="#" class="nav-player league-stats">League Stats</a>
+        </div>
+    </div>
+  </nav>
+
+  <div class="container league-page">
+    <h1>Arabian League Players</h1>
+    
+    <div class="filters">
+      <div class="filter-group">
+        <label for="nameSearch"><i class="fas fa-user"></i> Search by Name:</label>
+        <input type="text" id="nameSearch" placeholder="Enter player name...">
+      </div>
+      <div class="filter-group">
+        <label for="countryFilter"><i class="fas fa-globe"></i> Filter by Nationality:</label>
+        <select id="countryFilter">
+          <option value="">All Countries</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="roleFilter"><i class="fas fa-gamepad"></i> Filter by Role:</label>
+        <select id="roleFilter">
+          <option value="">All Roles</option>
+          <option value="Top">Top</option>
+          <option value="Jungle">Jungle</option>
+          <option value="Mid">Mid</option>
+          <option value="Bot">Bot</option>
+          <option value="Support">Support</option>
+          <option value="Coach">Coach</option>
+        </select>
+      </div>
+    </div>
+
+    <table id="player-table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Real Name</th>
+          <th>Country</th>
+          <th>Residency</th>
+          <th>Role</th>
+          <th>Birthdate</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- League Stats Section -->
+    <div class="stats-container">
+      <div class="stats-header">
+        <h2><i class="fas fa-chart-bar"></i> Arabian League Stats</h2>
+        <div class="stats-actions">
+          <select id="statsYearFilter">
+            <option value="2025">2025 Season</option>
+            <option value="2024">2024 Season</option>
+            <option value="2023">2023 Season</option>
+          </select>
+        </div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <p class="stat-label">Total Players</p>
+          <h3 class="stat-value" id="totalPlayers">0</h3>
+          <p class="stat-trend">
+            <i class="fas fa-arrow-up"></i> 12% from last season
+          </p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">International Players</p>
+          <h3 class="stat-value" id="internationalPlayers">0</h3>
+          <p class="stat-trend">
+            <i class="fas fa-arrow-up"></i> 8% from last season
+          </p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Average Age</p>
+          <h3 class="stat-value" id="averageAge">0</h3>
+          <p class="stat-trend">
+            <i class="fas fa-arrow-down"></i> 0.8 from last season
+          </p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">Most Common Role</p>
+          <h3 class="stat-value" id="commonRole">-</h3>
+          <p class="stat-trend">
+            No change from last season
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark Mode Toggle -->
+  <button class="dark-mode-toggle" id="darkModeToggle">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <script src="../data/flags/countryCodes.js"></script>
+  <script>
+    // Show loading animation
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        document.querySelector('.loading').classList.add('hidden');
+      }, 800);
+    });
+
+    function getRegionColorClass(region) {
+      const classes = {
+        "EMEA": "badge-emea",
+        "NA": "badge-na",
+        "KR": "badge-kr",
+        "CN": "badge-cn",
+        "PCS": "badge-pcs",
+        "LJL": "badge-ljl",
+        "BR": "badge-br",
+        "LATAM": "badge-latam",
+        "JP": "badge-jp",
+        "OCE": "badge-oce",
+        "SEA": "badge-sea",
+        "VN": "badge-vn",
+        // Add others as needed
+      };
+      return classes[region] || "badge-default";
+    }
+    
+    function getRoleIcon(role) {
+      const icons = {
+        "Top": "🛡️",
+        "Jungle": "🌲",
+        "Mid": "🎯",
+        "Bot": "🏹",
+        "Support": "🧙",
+        "Coach": "🧠"
+      };
+      return icons[role] || "❓";
+    }
+    
+    // Get display name without parentheses
+    function getDisplayName(playerName) {
+      return playerName.replace(/\(.*?\)/g, '').trim();
+    }
+
+    // Modified getFlagUrl using external countryCodes
+    function getFlagUrl(countryName,NationalityPrimary) {
+      if (!countryName && !NationalityPrimary) return '';
+      const code =!countryName ? countryCodes[NationalityPrimary] : countryCodes[countryName];
+       return code ? `https://flagcdn.com/w40/${code}.png` : '';
+    }
+
+    fetch('../data/al_players/AL.json')
+      .then(response => response.json())
+      .then(players => {
+        const tbody = document.querySelector("#player-table tbody");
+        const nameSearch = document.getElementById("nameSearch");
+        const countryFilter = document.getElementById("countryFilter");
+        const roleFilter = document.getElementById("roleFilter");
+
+        // Populate country filter
+        const countries = [...new Set(players.map(p => p.Country).filter(Boolean))].sort();
+        countries.forEach(country => {
+          const option = document.createElement("option");
+          option.value = country;
+          option.textContent = country;
+          countryFilter.appendChild(option);
+        });
+
+        // Calculate and update stats
+        function updateStats(filteredPlayers) {
+          document.getElementById('totalPlayers').textContent = filteredPlayers.length;
+          
+          // Count international players (players with a country different from the league's primary country)
+          const internationalCount = filteredPlayers.filter(p => p.Country && p.Country !== "Saudi Arabia").length;
+          document.getElementById('internationalPlayers').textContent = internationalCount;
+          
+          // Calculate average age
+          const today = new Date();
+          const playersWithAge = filteredPlayers.filter(p => p.Birthdate);
+          if (playersWithAge.length > 0) {
+            const totalAge = playersWithAge.reduce((sum, player) => {
+              const birthDate = new Date(player.Birthdate);
+              const age = today.getFullYear() - birthDate.getFullYear();
+              return sum + age;
+            }, 0);
+            const averageAge = (totalAge / playersWithAge.length).toFixed(1);
+            document.getElementById('averageAge').textContent = averageAge;
+          }
+          
+          // Find most common role
+          const roleCounts = {};
+          filteredPlayers.forEach(p => {
+            if (p.Role) {
+              roleCounts[p.Role] = (roleCounts[p.Role] || 0) + 1;
+            }
+          });
+          
+          let mostCommonRole = "";
+          let maxCount = 0;
+          for (const role in roleCounts) {
+            if (roleCounts[role] > maxCount) {
+              maxCount = roleCounts[role];
+              mostCommonRole = role;
+            }
+          }
+          document.getElementById('commonRole').textContent = mostCommonRole;
+        }
+
+      function renderTable(data) {
+        tbody.innerHTML = '';
+        data.forEach((player, index) => {
+          const row = document.createElement("tr");
+          row.style.setProperty('--row-index', index);
+          const displayName = getDisplayName(player.Player);
+          
+          row.innerHTML = `
+              <td>
+                <a class="player-link" href="../games/league-of-legends.html?player=${encodeURIComponent(player.Player)}" data-player="${encodeURIComponent(JSON.stringify(player))}">
+                  ${displayName}
+                </a>
+              </td>
+              <td>${player.Name}</td>
+              <td>
+                ${player.Country ? 
+                  `<img class="flag" src="${getFlagUrl(player.Country,player.NationalityPrimary)}" alt="${player.Country}">
+                  <span class="country-name">${player.Country}</span>` : 
+                  '—'}
+              </td>
+              <td><span class="region-badge ${getRegionColorClass(player.Residency)}">${player.Residency}</span></td>
+              <td class="role-cell"><span class="role-icon">${getRoleIcon(player.Role)}</span> ${player.Role}</td>
+              <td>${player.Birthdate || '—'}</td>
+            `;
+            tbody.appendChild(row);
+          });
+          
+          // Add click event to player links
+          document.querySelectorAll('.player-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+              const playerData = JSON.parse(decodeURIComponent(this.dataset.player));
+              showPlayerDetails(playerData);
+            });
+          });
+
+          
+          // Update stats with filtered data
+          updateStats(data);
+        }
+
+        function filterPlayers() {
+          const nameQuery = nameSearch.value.toLowerCase();
+          const countryQuery = countryFilter.value;
+          const roleQuery = roleFilter.value;
+          
+          return players.filter(player => {
+            const matchesName = player.Player && getDisplayName(player.Player).toLowerCase().includes(nameQuery);
+            const matchesCountry = !countryQuery || player.Country === countryQuery;
+            const matchesRole = !roleQuery || player.Role === roleQuery;
+            return matchesName && matchesCountry && matchesRole;
+          });
+        }
+
+        // Show player details
+        function showPlayerDetails(player) {
+          const playerDetails = document.getElementById('playerDetails');
+          
+          document.getElementById('playerDetailName').textContent = getDisplayName(player.Player);
+          document.getElementById('playerDetailRealName').textContent = player.Name || '-';
+          document.getElementById('playerDetailCountry').textContent = player.Country || '-';
+          document.getElementById('playerDetailResidency').textContent = player.Residency || '-';
+          document.getElementById('playerDetailRole').textContent = player.Role ? `${getRoleIcon(player.Role)} ${player.Role}` : '-';
+          
+          // Calculate age if birthdate exists
+          if (player.Birthdate) {
+            const birthDate = new Date(player.Birthdate);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            document.getElementById('playerDetailAge').textContent = age;
+          } else {
+            document.getElementById('playerDetailAge').textContent = '-';
+          }
+          
+          // Mock data for demonstration
+          document.getElementById('playerDetailProSince').textContent = '2021';
+          document.getElementById('playerDetailWinRate').textContent = (Math.random() * 30 + 50).toFixed(1) + '%';
+          document.getElementById('playerDetailKDA').textContent = (Math.random() * 3 + 2).toFixed(2);
+          
+        }
+
+      
+        // Filter event listeners
+        [nameSearch, countryFilter, roleFilter].forEach(element => {
+          element.addEventListener('input', () => renderTable(filterPlayers()));
+        });
+
+        // Initial render
+        renderTable(players);
+        
+        // Dark mode toggle
+        document.getElementById('darkModeToggle').addEventListener('click', function() {
+          document.body.classList.toggle('light-mode');
+          this.innerHTML = document.body.classList.contains('light-mode') ? 
+            '<i class="fas fa-sun"></i>' : 
+            '<i class="fas fa-moon"></i>';
+        });
+
+        // Global search functionality
+        window.searchPlayer = function() {
+          const query = document.getElementById('playerSearch').value.toLowerCase();
+          if (query) {
+            nameSearch.value = query;
+            renderTable(filterPlayers());
+          }
+        };
+
+        // Year stats filter
+        document.getElementById('statsYearFilter').addEventListener('change', function() {
+          // This would normally fetch data for the selected year
+          // For demo purposes, we'll just update the existing stats with random variations
+          const year = this.value;
+          if (year === '2024') {
+            document.getElementById('totalPlayers').textContent = Math.floor(players.length * 0.9);
+            document.getElementById('internationalPlayers').textContent = Math.floor(players.filter(p => p.Country && p.Country !== "Saudi Arabia").length * 0.92);
+            document.getElementById('averageAge').textContent = '21.8';
+          } else if (year === '2023') {
+            document.getElementById('totalPlayers').textContent = Math.floor(players.length * 0.8);
+            document.getElementById('internationalPlayers').textContent = Math.floor(players.filter(p => p.Country && p.Country !== "Saudi Arabia").length * 0.85);
+            document.getElementById('averageAge').textContent = '22.5';
+          } else {
+            updateStats(players);
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching player data:', error);
+        document.querySelector('.loading').classList.add('hidden');
+        alert('Failed to load player data. Please try again later.');
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+
+body {
+    padding-top: 70px !important; 
+}
+
+.team-header {
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #111, #1f1f1f);
+    border-bottom: 2px solid var(--primary-gold);
+}
+
+.team-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--light-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2rem;
+    border: 3px solid var(--primary-gold);
+}
+
+.team-info h1 {
+    font-size: 2.5rem;
+    color: var(--primary-gold);
+    margin: 0;
+}
+
+.team-info p {
+    margin: 0.4rem 0;
+    color: #ccc;
+}
+
+.section {
+    padding: 2rem !important;
+}
+
+.section h2 {
+    font-size: 2rem !important;
+    color: var(--primary-gold);
+    margin-bottom: 1rem !important;
+}
+
+
+.player-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.player-card {
+    background: var(--deep-bg);
+    border-radius: 15px;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #333;
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+.player-card:hover { transform: translateY(-5px); }
+
+.player-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.player-card h3 {
+    margin: 0.8rem 0 0.3rem;
+    color: var(--primary-gold);
+}
+
+.player-card p { color: #aaa; margin: 0 0 1rem; }
+
+.achievements ul {
+    list-style: none;
+    padding: 0 !important;
+}
+.achievements li {
+    margin: 0.5rem 0  !important;
+    padding: 0.5rem 1rem  !important;
+    background: #1f1f1f;
+    border-left: 4px solid var(--primary-gold);
+}
+.team-page {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem  !important;
+}
+
+.team-sidebar {
+  width: 300px;
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+  color: #eee;
+  padding: 0;
+  border: 2px solid #d4af37;
+  border-radius: 12px;
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+  box-shadow: 0 8px 32px rgba(212, 175, 55, 0.1);
+  overflow: hidden;
+}
+
+.sidebar-box {
+  text-align: left;
+}
+
+/* Team Header */
+.team-header {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #000;
+  margin-bottom: 0;
+}
+
+.sidebar-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px;
+}
+
+.team-name {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Section Styling */
+.team-info-section,
+.team-stats-section,
+.team-description-section,
+.team-socials-section,
+.team-roster-section {
+  padding: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.team-roster-section {
+  border-bottom: none;
+}
+
+.section-title {
+  font-size: 16px !important;
+  font-weight: bold;
+  color: #d4af37;
+  margin: 0 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Info Rows */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 5px 0;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.info-value {
+  color: #fff;
+  font-size: 14px;
+  text-align: right;
+  max-width: 60%;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 12px 8px;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.stat-number {
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  color: #d4af37;
+  line-height: 1;
+}
+
+.stat-label {
+  display: block;
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Description */
+.team-description {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  color: #ddd;
+  text-align: justify;
+}
+
+/* Social Media */
+.team-socials {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.social-link.twitter {
+  background: linear-gradient(135deg, #1DA1F2, #0d8bd9);
+  color: white;
+}
+
+.social-link.instagram {
+  background: linear-gradient(135deg, #E4405F, #C13584, #833AB4);
+  color: white;
+}
+
+.social-link.twitch {
+  background: linear-gradient(135deg, #9146FF, #7B2CBF);
+  color: white;
+}
+
+.social-link.facebook {
+  background: linear-gradient(135deg, #1877F2, #166FE5);
+  color: white;
+}
+
+.social-link.youtube {
+  background: linear-gradient(135deg, #FF0000, #CC0000);
+  color: white;
+}
+
+.social-link.discord {
+  background: linear-gradient(135deg, #5865F2, #4752C4);
+  color: white;
+}
+
+.social-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.social-link:hover .social-icon {
+  transform: scale(1.1);
+}
+
+/* Roster Section */
+.roster-tabs {
+  display: flex;
+  margin-bottom: 15px;
+  background: #222;
+  border-radius: 6px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.roster-tab {
+  flex: 1;
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  color: #ccc;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.roster-tab.active {
+  background: #d4af37;
+  color: #000;
+}
+
+.roster-tab:hover:not(.active) {
+  background: #333;
+  color: #fff;
+}
+
+.roster-content {
+  position: relative;
+}
+
+.roster-list {
+  display: none;
+}
+
+.roster-list.active {
+  display: block;
+}
+
+.player-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border-left: 3px solid #d4af37;
+  transition: all 0.3s ease;
+}
+
+.player-item:hover {
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateX(4px);
+}
+
+.player-name {
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+}
+
+.player-role {
+  font-size: 12px;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-weight: 500;
+}
+
+.no-players {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin: 20px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .team-sidebar {
+    width: 100%;
+    position: relative;
+    top: 0;
+    margin-bottom: 20px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .roster-tab {
+    font-size: 10px;
+    padding: 6px 2px;
+  }
+}
+
+/* Animation for content changes */
+.sidebar-box * {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.team-content {
+    flex: 1;
+}
+
+.discipline {
+    margin-bottom: 2.5rem;
+    border: 1px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #111;
+}
+
+.discipline-toggle {
+    width: 100%;
+    padding: 1rem !important;
+    font-size: 1.2rem;
+    text-align: left;
+    background: var(--primary-gold);
+    color: #000;
+    cursor: pointer;
+    border: none;
+}
+
+.discipline-roster {
+  display: none;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 150px)); /* fixed-size slots */
+  gap: 1rem;
+  justify-content: center; /* centers the whole row */
+  padding-top: 1rem;
+}
+
+
+.discipline-roster.open {
+  display: grid;
+}
+
+.player-face {
+  flex: 0 1 200px; /* fixed base width */
+  max-width: 200px;
+  text-align: center;
+}
+
+.player-face img {
+  width: 100%;
+  height: auto;
+  max-height: 150px; /* keeps it proportional */
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.player-face p {
+margin-top: 0.5rem;
+font-size: 0.9rem;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: var(--deep-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 700px;
+    width: 90%;
+    color: var(--light-text);
+    border: 2px solid var(--primary-gold);
+}
+.close-btn {
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
+}

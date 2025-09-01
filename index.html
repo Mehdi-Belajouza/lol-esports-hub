@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ESports Hub - Professional Gaming Platform</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/unified.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="https://esportsworldcup.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fintermission-background.9d4d8cf7.png&w=3840&q=75" alt="ESports Hub Logo" class="logo-img">
+                <span>Esports MENA</span>
+            </a>
+            <div class="nav-links">
+                <a href="#games" class="nav-link">Games</a>
+                <a href="#tournaments" class="nav-link">Tournaments</a>
+                <a href="#news" class="nav-link">News</a>
+                <a href="./teams/index.html" class="nav-link">Teams</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">The Ultimate Esports Hub</h1>
+            <p class="hero-subtitle">
+                Discover professional gaming like never before. Track tournaments, follow your favorite players, 
+                and stay updated with the latest esports news across all major titles.
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">15+</div>
+                    <div class="hero-stat-label">Games Covered</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">500+</div>
+                    <div class="hero-stat-label">Professional Players</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">50+</div>
+                    <div class="hero-stat-label">Active Tournaments</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">25+</div>
+                    <div class="hero-stat-label">Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section id="games" class="games-section">
+        <div class="section-container">
+            <h2 class="section-title">Featured Games</h2>
+            <div class="games-grid" id="games-grid">
+                <!-- Games will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News Section -->
+   <section id="news" class="news-section">
+        <div class="section-container">
+            <h2 class="section-title">Latest News</h2>
+            <div class="news-grid" id="news-grid">
+                <!-- News will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Tournaments -->
+    <section id="tournaments" class="tournaments-section">
+        <div class="section-container">
+            <h2 class="section-title">Upcoming Tournaments</h2>
+            <div class="news-grid" id="tournaments-grid">
+                <!-- Tournaments will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="section-container">
+            <h2 class="cta-title">Ready to Dive into Esports?</h2>
+            <p class="cta-subtitle">Join thousands of fans following their favorite games and players</p>
+            <div class="cta-buttons">
+                <a href="#games" class="cta-button primary">Explore Games</a>
+                <a href="#tournaments" class="cta-button secondary">View Tournaments</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Sample data structure for different games
+        const gamesData = [
+         { name: "Apex Legends Global Series", icon: "apex", players: 10000, tournaments: 50, regions: 5 },
+            { name: "Call of Duty Black Ops 6", icon: "cod-bo6", players: 8000, tournaments: 30, regions: 4 },
+            { name: "Call of Duty Warzone", icon: "warzone", players: 12000, tournaments: 40, regions: 6 },
+            { name: "Chess", icon: "chess", players: 5000, tournaments: 20, regions: 3 },
+            { name: "Counter-Strike 2", icon: "cs2", players: 15000, tournaments: 60, regions: 7 },
+            { name: "Crossfire", icon: "crossfire", players: 6000, tournaments: 25, regions: 4 },
+            { name: "Dota 2", icon: "dota2", players: 20000, tournaments: 70, regions: 8 },
+            { name: "FC Pro World Championship", icon: "fc-pro", players: 7000, tournaments: 35, regions: 5 },
+            { name: "Fatal Fury City of Wolves", icon: "fatal-fury", players: 4000, tournaments: 15, regions: 3 },
+            { name: "Free Fire", icon: "free-fire", players: 25000, tournaments: 80, regions: 10 },
+            // { name: "Honor of Kings", icon: "hok", players: 18000, tournaments: 65, regions: 9 },
+            { name: "League of Legends", icon: "lol", players: 30000, tournaments: 100, regions: 12 },
+            // { name: "PUBG Mobile" },
+            // { name: "Rainbow Six Siege" },
+            // { name: "Rennsport" },
+            // { name: "Rocket League" },
+            // { name: "StarCraft II" },
+            // { name: "Street Fighter 6" },
+            // { name: "TeamFight Tactics" },
+            // { name: "Tekken 8" }
+        ];
+        const newsData = [
+            {
+                title: "World Championship 2024 Brackets Announced",
+                excerpt: "The most anticipated esports event of the year reveals its tournament structure and participating teams.",
+                category: "Tournament",
+                image: "https://koreajoongangdaily.joins.com/data/photo/2023/04/11/0cc7763c-159d-4540-aa0c-8309c7ac7899.jpg",
+                date: "2024-07-20",
+                readTime: "3 min"
+            },
+            {
+                title: "Rising Stars: Top 10 Players to Watch",
+                excerpt: "Meet the emerging talents who are making waves in the competitive gaming scene.",
+                category: "Players",
+                image: "https://www.esports.net/wp-content/uploads/2024/07/s1mple-CS2-return-1024x576.jpg",
+                date: "2024-07-18",
+                readTime: "5 min"
+            },
+            {
+                title: "New Season Rules and Format Changes",
+                excerpt: "Major leagues announce significant updates to their competitive formats for the upcoming season.",
+                category: "News",
+                image: "https://cdn.oneesports.gg/cdn-data/2021/12/Valorant_Top5ValorantPlayersin2021_2.webp",
+                date: "2024-07-15",
+                readTime: "4 min"
+            },
+            {
+                title: "New Season Rules and Format Changes",
+                excerpt: "Major leagues announce significant updates to their competitive formats for the upcoming season.",
+                category: "News",
+                image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=350&h=200&fit=crop",
+                date: "2024-07-15",
+                readTime: "4 min"
+            },
+            {
+                title: "Esports Investment Reaches Record High",
+                excerpt: "Global esports funding hits unprecedented levels as major brands invest in competitive gaming.",
+                category: "Business",
+                image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=350&h=200&fit=crop",
+                date: "2024-07-12",
+                readTime: "6 min"
+            },
+            {
+                title: "New Training Facilities Open Worldwide",
+                excerpt: "State-of-the-art esports training centers launch in major cities to support professional players.",
+                category: "Facilities",
+                image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=350&h=200&fit=crop",
+                date: "2024-07-10",
+                readTime: "4 min"
+            },
+            {
+                title: "Mobile Esports Growth Continues",
+                excerpt: "Mobile gaming competitions see massive audience growth across emerging markets.",
+                category: "Mobile",
+                image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=350&h=200&fit=crop",
+                date: "2024-07-08",
+                readTime: "5 min"
+            }
+        ];
+
+        const tournamentsData = [
+            {
+                name: "Arabian League Championship",
+                game: "League of Legends",
+                logo: "https://esportsworldcup.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fintermission-background.9d4d8cf7.png&w=3840&q=75",
+                date: "Aug 15-25, 2024",
+                teams: "12",
+                prize: "$50K",
+                viewers: "100K+"
+            },
+            {
+                name: "MENA Masters",
+                game: "Valorant",
+                logo: "https://esportsworldcup.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fintermission-background.9d4d8cf7.png&w=3840&q=75",
+                date: "Sep 1-15, 2024",
+                teams: "16",
+                prize: "$75K",
+                viewers: "150K+"
+            },
+            {
+                name: "Regional CS2 Cup",
+                game: "Counter-Strike 2",
+                logo: "https://esportsworldcup.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fintermission-background.9d4d8cf7.png&w=3840&q=75",
+                date: "Oct 5-20, 2024",
+                teams: "8",
+                prize: "$30K",
+                viewers: "80K+"
+            }
+        ];
+
+        // Load games data
+        function loadGames() {
+            const gamesGrid = document.getElementById('games-grid');
+            gamesGrid.innerHTML = '';
+
+            const placeholderImage = 'https://esportsworldcup.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fintermission-background.9d4d8cf7.png&w=3840&q=75';
+
+            gamesData.forEach(game => {
+                const iconSrc = game.icon && game.icon.trim() !== '' ? game.icon : placeholderImage;
+
+                gamesGrid.innerHTML += `
+                    <div class="game-card" onclick="navigateToGame('${game.name.toLowerCase().replace(/\s+/g, '-')}')">
+                        <img src="${placeholderImage}" alt="${game.name}" class="game-image">
+                        <div class="game-overlay">
+                            <h3 class="game-title">${game.name}</h3>
+                            <div class="game-stats">${game.players} Players • ${game.tournaments} Tournaments • ${game.regions} Regions</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+
+        // Load news data
+        function loadNews() {
+            const newsGrid = document.getElementById('news-grid');
+            newsGrid.innerHTML = '';
+            
+            // Show first 3 articles
+            const initialNews = newsData.slice(0, 3);
+            initialNews.forEach(article => {
+                newsGrid.innerHTML += createNewsCard(article);
+            });
+
+            // Add expand section if there are more articles
+            if (newsData.length > 3) {
+                const expandSection = document.createElement('div');
+                expandSection.className = 'news-expand-section';
+                expandSection.innerHTML = `
+                    <button class="news-expand-btn" onclick="toggleAdditionalNews()">
+                        <span>Show More News</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                `;
+                newsGrid.parentNode.appendChild(expandSection);
+
+                // Create additional news grid (hidden initially)
+                const additionalGrid = document.createElement('div');
+                additionalGrid.className = 'additional-news news-grid';
+                additionalGrid.id = 'additional-news-grid';
+                
+                const additionalNews = newsData.slice(3);
+                additionalNews.forEach(article => {
+                    additionalGrid.innerHTML += createNewsCard(article);
+                });
+                
+                newsGrid.parentNode.appendChild(additionalGrid);
+            }
+        }
+
+        function createNewsCard(article) {
+            return `
+                <article class="news-card">
+                    <img src="${article.image}" alt="${article.title}" class="news-image">
+                    <div class="news-content">
+                        <span class="news-category">${article.category}</span>
+                        <h3 class="news-title">${article.title}</h3>
+                        <p class="news-excerpt">${article.excerpt}</p>
+                        <div class="news-meta">
+                            <span>${new Date(article.date).toLocaleDateString()}</span>
+                            <span>${article.readTime} read</span>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function toggleAdditionalNews() {
+            const additionalGrid = document.getElementById('additional-news-grid');
+            const expandBtn = document.querySelector('.news-expand-btn');
+            const arrow = expandBtn.querySelector('.arrow');
+            const span = expandBtn.querySelector('span');
+            
+            if (additionalGrid.classList.contains('show')) {
+                // Hide additional news
+                additionalGrid.classList.remove('show');
+                expandBtn.classList.remove('expanded');
+                span.textContent = 'Show More News';
+            } else {
+                // Show additional news
+                additionalGrid.classList.add('show');
+                expandBtn.classList.add('expanded');
+                span.textContent = 'Show Less News';
+            }
+        }
+        // Load tournaments data
+        function loadTournaments() {
+            const tournamentsGrid = document.getElementById('tournaments-grid');
+            tournamentsGrid.innerHTML = '';
+            
+            tournamentsData.forEach(tournament => {
+                tournamentsGrid.innerHTML += `
+                    <div class="tournament-card">
+                        <div class="tournament-header">
+                            <img src="${tournament.logo}" alt="${tournament.name}" class="tournament-logo">
+                            <div class="tournament-info">
+                                <h3>${tournament.name}</h3>
+                                <div class="tournament-date">${tournament.date}</div>
+                                <small style="color: #888;">${tournament.game}</small>
+                            </div>
+                        </div>
+                        <div class="tournament-stats">
+                            <div class="tournament-stat">
+                                <div class="tournament-stat-value">${tournament.teams}</div>
+                                <div class="tournament-stat-label">Teams</div>
+                            </div>
+                            <div class="tournament-stat">
+                                <div class="tournament-stat-value">${tournament.prize}</div>
+                                <div class="tournament-stat-label">Prize Pool</div>
+                            </div>
+                            <div class="tournament-stat">
+                                <div class="tournament-stat-value">${tournament.viewers}</div>
+                                <div class="tournament-stat-label">Peak Viewers</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+
+        // Navigation functions
+        function navigateToGame(gameName) {
+            // Navigate to game-specific page
+            window.location.href = `games/${gameName}.html`;
+        }
+
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGames();
+            loadNews();
+            loadTournaments();
+        });
+    </script>
+</body>
+</html>

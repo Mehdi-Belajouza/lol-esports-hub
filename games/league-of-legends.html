@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>LoL Player DNA - Arabian League Edition</title>
+    <link rel="stylesheet" href="../css/unified.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/analytics.css">
+</head>
+<body>
+    <nav class="main-nav league-nav">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="https://static.wikia.nocookie.net/lolesports_gamepedia_en/images/6/60/Arabian_League.png" alt="LoL DNA Logo" class="logo-img">
+                <span>LoL Player DNA - Arabian League</span>
+            </a>
+            <div class="nav-links">
+                <div class="nav-search">
+                    <input type="text" id="playerSearch" placeholder="Search player...">
+                    <button onclick="searchPlayer()">🔍</button>
+                </div>
+                <a href="../index.html" class="nav-player">Main Page</a>
+                <a href="../tournaments/ArabianLeague.html" class="nav-player">Players Table</a>
+                <a href="#" class="nav-player league-stats">League Stats</a>
+            </div>
+        </div>
+    </nav>
+    <div class="page-layout league-page">
+        <div class="ad-sidebar left">
+            <div class="ad-placeholder"></div>
+            <div class="ad-placeholder"></div>
+            <div class="ad-placeholder"></div>
+        </div>
+        <div class="main-content">
+            <div class="container">
+                <div id="landing-view" class="landing-view"> 
+                    <!-- Landing View (shown when no player is selected) -->
+                    <div class="league-hero-section">
+                        <div class="league-hero-content">
+                            
+                            <h1 class="league-title">Welcome to the Arabian League Player Database</h1>
+                            
+                            <p class="league-description">
+                            The Arabian League is one of the fastest-growing competitive regions in League of Legends esports.
+                            Founded in 2022, it hosts the best talent from across the Middle East and North Africa,
+                            showcasing skilled players and exciting competitions year-round.
+                            </p>
+                            
+                            <div class="league-video-container">
+                            <div class="league-video-wrapper">
+                                <div class="video-placeholder">
+                                <div class="video-play-button">
+                                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="11" stroke="white" stroke-width="2"/>
+                                    <path d="M16 12L10 16V8L16 12Z" fill="white"/>
+                                    </svg>
+                                </div>
+                                <div class="video-text">Watch Arabian League Highlights</div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="league-stats-section">
+                    <h2 class="section-title">League Highlights</h2>
+                    <div class="stats-highlights">
+                        <div class="stat-box">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Professional Teams</div>
+                        </div>
+                        <div class="stat-box">
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Annual Splits</div>
+                        </div>
+                        <div class="stat-box">
+                        <div class="stat-value">60+</div>
+                        <div class="stat-label">Pro Players</div>
+                        </div>
+                        <div class="stat-box">
+                        <div class="stat-value">150K+</div>
+                        <div class="stat-label">Peak Viewers</div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="league-teams-section">
+                    <h2 class="section-title">Featured Teams</h2>
+                    <div id="featured-teams" class="featured-teams-scroll"></div>
+                    </div>
+                </div> 
+                <!-- Player profile view (shown when a player is selected) -->
+                <div id="player-profile" style="display: none;">
+                    <div id="profile-header"></div>
+                    
+                    <div class="stats-highlights" id="player-highlights">
+                        <!-- Player highlights will be added here -->
+                    </div>
+                    <section id="champion-mastery"></section>
+                    <section id="tournament-map"></section>
+                    <section id="champion-stats"></section>
+                    <br>
+                    <div id="tournament-history-section">
+                        <h2 class="section-title">Tournament History</h2>
+                        <div style="overflow-x:auto;">
+                            <table id="tournament-history-table" class="styled-table">
+                                <thead>
+                                    <tr>
+                                        <th>Place</th>
+                                        <th>Date</th>
+                                        <th>Event</th>
+                                        <th>Team</th>
+                                        <th>Role</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+  
+                </div>
+        </div>
+        <div class="ad-sidebar right">
+            <div class="ad-placeholder"></div>
+            <div class="ad-placeholder"></div>
+            <div class="ad-placeholder"></div>
+        </div>
+    </div>
+        <script src="../data/flags/countryCodes.js"></script>
+    <script>
+        // Configuration - Set your data file name here
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        
+        // Get player name from URL like ?player=rookie
+        const playerName = getQueryParam('player');
+        const DATA_FILE = playerName ? `../data/players/${playerName.toLowerCase()}.json` : null;
+        
+        // DOM Builder Helper
+        function createElement(tag, attributes = {}, content = "") {
+            const element = document.createElement(tag);
+            Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+            if (content) element.innerHTML = content;
+            return element;
+        }
+        
+        // Initialize Page based on whether a player is selected
+        async function initializePage() {
+            if (playerName) {
+                // Show player profile and hide landing view
+                document.getElementById('landing-view').style.display = 'none';
+                document.getElementById('player-profile').style.display = 'block';
+                // Load player data and build profile
+                await loadPlayerData();
+            } else {
+                // Show landing view for Arabian League
+                document.getElementById('landing-view').style.display = 'block';
+                document.getElementById('player-profile').style.display = 'none';
+                // Load Arabian League data
+                loadArabianLeagueData();
+            }
+        }
+
+        function loadArabianLeagueData() {
+            fetch('/data/teams/arabian_league_teams.json') // Absolute path for JSON
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to load team data: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(featuredTeams => {
+                    const teamsContainer = document.getElementById('featured-teams');
+                    teamsContainer.innerHTML = '';
+                    featuredTeams.forEach(team => {
+                        // Normalize logo path
+                        let logoPath = team.logo;
+                        if (!logoPath.startsWith('/')) {
+                            // Assuming images are in /data/teams/
+                            logoPath = `/data/teams/${logoPath.split('/').pop()}`; // Extract filename, prepend correct path
+                        }
+                        teamsContainer.innerHTML += `
+                            <div class="team-card">
+                                <img src="${logoPath}" alt="${team.name}" class="team-logo">
+                                <h3>${team.name}</h3>
+                                <div>${team.region}</div>
+                                <small>Country: ${team.country}</small>
+                            </div>
+                        `;
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading team data:", error);
+                    console.log("Attempted JSON URL:", new URL('/data/teams/arabian_league_teams.json', window.location.origin).href);
+                });
+        }
+        function startAutoScrollLoop(containerId, interval = 30, speed = 6) {
+            const container = document.getElementById(containerId);
+
+            // Clone child nodes for infinite loop effect
+            container.innerHTML += container.innerHTML;
+
+            let scrollAmount = 0;
+
+            const scrollTimer = setInterval(() => {
+                container.scrollLeft += speed;
+                scrollAmount += speed;
+
+                // Reset to start when halfway through
+                if (scrollAmount >= container.scrollWidth / 2) {
+                    container.scrollLeft = 0;
+                    scrollAmount = 0;
+                }
+            }, interval);
+        }
+
+        loadArabianLeagueData(); // your team loading function
+
+        // After content is added:
+        setTimeout(() => startAutoScrollLoop('featured-teams'), 500);
+        // Search player function
+        function searchPlayer() {
+            const searchInput = document.getElementById('playerSearch').value.trim();
+            if (searchInput) {
+                window.location.href = `?player=${searchInput.toLowerCase()}`;
+            }
+        }
+
+        
+        // Add event listener for search input (Enter key)
+        document.getElementById('playerSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchPlayer();
+            }
+        });
+        
+        async function loadPlayerData() {
+            try {
+                if (!DATA_FILE) throw new Error("No player specified in the URL.");
+                const response = await fetch(DATA_FILE);
+                if (!response.ok) throw new Error('Player data not found.');
+                const data = await response.json();
+                
+                // Use the data to build the player profile
+                buildPlayerProfile(data);
+                return data;
+            } catch (error) {
+                document.getElementById('player-profile').innerHTML = `
+                    <div class="container" style="text-align: center; padding: 2rem;">
+                        <h2 style="color: #ff4655;">Data Loading Error</h2>
+                        <p>${error.message}</p>
+                        <p>Check if <code>${DATA_FILE}</code> exists or try searching for another player.</p>
+                        <button onclick="window.location.href='league-of-legends.html'" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #ff4655; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            Return to Home
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+
+        
+    async function buildPlayerHighlights(player) {
+            const highlightsContainer = document.getElementById('player-highlights');
+            highlightsContainer.innerHTML = '';
+
+            // 1️⃣ Fetch the player’s scoreboard JSON
+            const encodedName = encodeURIComponent(player.name);
+            const resp = await fetch(`../data/scoreboards/${encodedName}_tournament_scoreboards.json`);
+            if (!resp.ok) {
+                highlightsContainer.innerHTML = `<p>Error loading stats.</p>`;
+                return;
+            }
+            const games = await resp.json();
+
+            if (!Array.isArray(games) || games.length === 0) {
+                highlightsContainer.innerHTML = `<p>No games found.</p>`;
+                return;
+            }
+
+            // 2️⃣ Compute Career Length (in years)
+            //    Parse all dates, find earliest and latest
+            const dates = games
+            .map(g => new Date(g["DateTime UTC"].replace(' ', 'T')))
+            .filter(d => !isNaN(d));
+            const first = new Date(Math.min(...dates));
+            const last  = new Date(Math.max(...dates));
+            const years = ((last - first) / (1000 * 60 * 60 * 24 * 365)).toFixed(1);
+
+            // 3️⃣ Total Kills
+            const totalKills = games.reduce((sum, g) => sum + Number(g.Kills || 0), 0);
+
+            // 4️⃣ Win Rate
+            const totalGames = games.length;
+            const wins = games.reduce((sum, g) => sum + (Number(g.Winner) ===  (g.Team === g.Team1 ? 1 : 2) ? 1 : 0), 0);
+            const winRate = totalGames ? Math.round((wins / totalGames) * 100) + '%' : 'N/A';
+
+            // 5️⃣ Tournaments Played (unique MatchId)
+            const tournaments = new Set(games.map(g => g.MatchId));
+            const tourCount = tournaments.size;
+
+            // 6️⃣ Build highlights array
+            const highlights = [
+                { value: years,    label: "Career Years" },
+                { value: totalKills, label: "Total Kills" },
+                { value: winRate,  label: "Win Rate" },
+                { value: tourCount, label: "Registred Games" }
+            ];
+
+            // 7️⃣ Render
+            highlights.forEach(stat => {
+                highlightsContainer.innerHTML += `
+                    <div class="stat-box">
+                        <div class="stat-value">${stat.value}</div>
+                        <div class="stat-label">${stat.label}</div>
+                    </div>
+                `;
+            });
+        }
+
+        
+        function buildProfileHeader(player) {
+        const container = document.getElementById("profile-header");
+        container.className = "player-banner";
+        container.innerHTML = ''; // Clear previous content
+
+        // Create banner content wrapper
+        const bannerContent = createElement("div", { class: "banner-content" });
+
+        // ➕ Create and append player image
+        const playerImageDiv = createElement("div", { class: "banner-player-image" });
+        if (player.avatar) {
+            playerImageDiv.style.setProperty('background-image', `url(${player.avatar})`);
+        }
+        bannerContent.appendChild(playerImageDiv);
+
+        // Player info block
+        const playerInfo = createElement("div", { class: "banner-player-info" });
+
+        // Player name
+        const playerName = createElement("h1", { class: "banner-player-name" }, player.name.replace(/\([^)]*\)/g, ""));
+        playerInfo.appendChild(playerName);
+
+        // Team name
+        const teamDiv = createElement("div", { class: "banner-player-team" }, player.team || "Unknown Team");
+        playerInfo.appendChild(teamDiv);
+
+        // Role
+        const roleDiv = createElement("div", { class: "banner-player-role" }, player.role || "Undefined");
+        playerInfo.appendChild(roleDiv);
+
+        // Country flag and name
+        function getFlagUrl(countryName) {
+            const code = countryCodes[countryName];
+            return code ? `https://flagcdn.com/w40/${code}.png` : '';
+        }
+
+        const countryDiv = createElement("div", { class: "banner-country" });
+
+        const flagUrl = getFlagUrl(player.country);
+        if (flagUrl) {
+            const flagImg = createElement("img", {
+                src: flagUrl,
+                alt: `${player.country || 'Unknown'} Flag`,
+                onerror: function () { this.style.display = 'none'; }
+            });
+            countryDiv.appendChild(flagImg);
+        }
+        countryDiv.appendChild(createElement("span", {}, player.country || 'Unknown'));
+        playerInfo.appendChild(countryDiv);
+
+        // Trophy wall
+        const trophyWall = createElement("div", { class: "banner-trophy-wall" });
+        player.trophies.forEach(trophy => {
+            const trophyDiv = createElement("div", { class: "banner-trophy" });
+            trophyDiv.innerHTML = `${trophy.icon} <strong>${trophy.label}:</strong> ${trophy.count}x`;
+            trophyWall.appendChild(trophyDiv);
+        });
+        playerInfo.appendChild(trophyWall);
+
+        // Append player info and image to banner content
+        bannerContent.appendChild(playerInfo);
+        container.appendChild(bannerContent);
+
+        // ⚠️ Do NOT use background-image to fill the whole banner anymore
+        // This line is now optional — better to show the player as a portrait
+        // container.style.setProperty('--player-bg-image', `url(${player.avatar})`);
+
+        // Optional: Team logo overlay
+        if (player.teamLogo) {
+            container.style.setProperty('--team-logo-image', `url(${player.teamLogo})`);
+        } else if (player.team) {
+            // Use team name to construct path, encoding spaces/special chars
+            const encodedTeamName = encodeURIComponent(player.team);
+            const logoUrl = `../data/teams/${encodedTeamName}.png`;
+
+            // Check if image exists
+            const img = new Image();
+            img.onload = () => {
+                container.style.setProperty('--team-logo-image', `url(${logoUrl})`);
+            };
+            img.onerror = () => {
+                console.warn(`Team logo not found at: ${logoUrl}`);
+            };
+            img.src = logoUrl;
+        }
+
+    }
+
+        // Helper function for creating elements (if not already defined)
+        function createElement(tag, attributes = {}, textContent = '') {
+            const element = document.createElement(tag);
+            
+            // Set attributes
+            Object.keys(attributes).forEach(key => {
+                if (key === 'style') {
+                    element.style.cssText = attributes[key];
+                } else if (key === 'onerror') {
+                    element.onerror = attributes[key];
+                } else {
+                    element.setAttribute(key, attributes[key]);
+                }
+            });
+            
+            // Set text content if provided
+            if (textContent) {
+                element.textContent = textContent;
+            }
+            
+            return element;
+        }
+
+    function buildChampionMastery(champions) {
+        const container = document.getElementById("champion-mastery");
+        container.innerHTML = '';
+        container.appendChild(createElement("h2", { class: "section-title" }, "Played Champions"));
+        
+        const nameMap = {
+            "Renata Glasc":"Renata",
+            "Wukong": "MonkeyKing",
+            "Kai'Sa": "Kaisa",
+            "Kog'Maw": "KogMaw",
+            "Cho'Gath": "Chogath",
+            "Vel'Koz": "Velkoz",
+            "Rek'Sai": "RekSai",
+            "LeBlanc": "Leblanc",
+            "Nunu & Willump": "Nunu"
+        };
+        
+        // Create a unique ID for this instance
+        const wrapperId = 'champion-wrapper-' + Date.now();
+        const toggleId = 'champion-toggle-' + Date.now();
+        
+        // Outer wrapper to allow overflow control
+        const wrapper = document.createElement("div");
+        wrapper.id = wrapperId;
+        wrapper.className = "champion-mastery-wrapper collapsed";
+        
+        const champGrid = createElement("div", { class: "champion-mastery-grid" });
+        
+        champions.forEach(champ => {
+            let imageName = nameMap[champ.name] || champ.name.replace(/[^a-zA-Z]/g, '');
+            const champDiv = document.createElement('div');
+            champDiv.className = 'champion-icon';
+            champDiv.innerHTML = `
+                <img src="https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/${imageName}.png"
+                    style="width:80px; height:80px; border-radius: 50%; border: 3px solid ${champ.border};" />
+                <div>${champ.name}</div>
+                <small>Winrate: ${champ.winrate}</small>
+            `;
+            champGrid.appendChild(champDiv);
+        });
+        
+        wrapper.appendChild(champGrid);
+        container.appendChild(wrapper);
+        
+        // Create toggle button
+        const toggleBtn = document.createElement("button");
+        toggleBtn.id = toggleId;
+        toggleBtn.className = "champion-toggle-button";
+        toggleBtn.textContent = "Show More";
+        
+        // Add click event using a closure to capture the IDs
+        toggleBtn.onclick = function() {
+            const wrapperElement = document.getElementById(wrapperId);
+            const buttonElement = document.getElementById(toggleId);
+            
+            if (wrapperElement.classList.contains("collapsed")) {
+                wrapperElement.classList.remove("collapsed");
+                wrapperElement.classList.add("expanded");
+                buttonElement.textContent = "Show Less";
+            } else {
+                wrapperElement.classList.remove("expanded");
+                wrapperElement.classList.add("collapsed");
+                buttonElement.textContent = "Show More";
+            }
+        };
+        
+        container.appendChild(toggleBtn);
+    }
+
+        
+    async function buildChampionStatsOverview(player) {
+        const container = document.getElementById("champion-stats");
+        container.innerHTML = '';
+        container.appendChild(createElement("h2", { class: "section-title" }, "Top Champions"));
+
+        const encodedName = encodeURIComponent(player.name);
+        const resp = await fetch(`../data/scoreboards/${encodedName}_tournament_scoreboards.json`);
+        if (!resp.ok) {
+            container.innerHTML += `<p>Error loading champion stats.</p>`;
+            return;
+        }
+
+        const games = await resp.json();
+        if (!games.length) {
+            container.innerHTML += `<p>No champion data found.</p>`;
+            return;
+        }
+
+        const nameMap = {
+            "Renata Glasc":"Renata",
+            "Kai'Sa": "Kaisa",
+            "Kog'Maw": "KogMaw",
+            "Cho'Gath": "Chogath",
+            "Vel'Koz": "Velkoz",
+            "Rek'Sai": "RekSai",
+            "LeBlanc": "Leblanc",
+            "Nunu & Willump": "Nunu",
+            "Wukong": "MonkeyKing"
+        };
+
+        const championStats = {};
+        games.forEach(g => {
+            const champ = g.Champion;
+            if (!champ) return;
+            if (!championStats[champ]) {
+                championStats[champ] = {
+                    games: 0,
+                    kills: 0,
+                    deaths: 0,
+                    assists: 0,
+                    cs: 0,
+                    minutes: 0,
+                    wins: 0
+                };
+            }
+            const c = championStats[champ];
+            c.games++;
+            c.kills += +g.Kills || 0;
+            c.deaths += +g.Deaths || 0;
+            c.assists += +g.Assists || 0;
+            c.cs += +g.CS || 0;
+            c.minutes += parseFloat(g["Gamelength Number"]) || 0;
+            const won = Number(g.Winner) === (g.Team === g.Team1 ? 1 : 2);
+            if (won) c.wins++;
+        });
+
+        const topChamps = Object.entries(championStats)
+            .map(([name, stats]) => ({
+                name,
+                ...stats,
+                image: nameMap[name] || name.replace(/[^a-zA-Z]/g, ''),
+                kda: ((stats.kills + stats.assists) / (stats.deaths || 1)).toFixed(2),
+                csPerMin: (stats.cs / stats.minutes).toFixed(2),
+                winRate: Math.round((stats.wins / stats.games) * 100)
+            }))
+            .sort((a, b) => b.games - a.games)
+            .slice(0, 4);
+
+        const champGrid = createElement("div", { class: "champion-stats-grid" });
+
+        topChamps.forEach(c => {
+            champGrid.innerHTML += `
+                <div class="champion-card">
+                    <img 
+                        src="https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/${c.image}.png"
+                        alt="${c.name}"
+                        class="champion-image"
+                    />
+                    <div class="champion-name">${c.name}</div>
+                    <div class="champion-meta">Games: ${c.games} • Winrate: ${c.winRate}%</div>
+                    <div class="champion-stats">
+                        <div><strong>KDA:</strong> ${c.kda}</div>
+                        <div><strong>CS/Min:</strong> ${c.csPerMin}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.appendChild(champGrid);
+    }
+
+        // Initialize when DOM is loaded
+        document.addEventListener("DOMContentLoaded", initializePage);
+
+        function buildTournamentHistory(playerName) {
+            const tableBody = document.querySelector("#tournament-history-table tbody");
+            tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: #aaa;">Loading...</td></tr>`;
+            
+            fetch(`../../data/results/${playerName}_tournament_results.json`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Tournament data not found.");
+                    return response.json();
+                })
+                .then(data => {
+                    tableBody.innerHTML = "";
+                    if (data.length === 0) {
+                        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">No tournaments found.</td></tr>`;
+                        return;
+                    }
+
+                    // Sort by most recent
+                    data.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+                    const recent = data.slice(0, 10);
+
+                recent.forEach(t => {
+                    const cleanTeamName = t.Team ? t.Team.replace(/\s*\(.*?\)/g, '') : '-';
+                    const placeClass = getPlacementClass(t.Place);
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td class="${placeClass}"><strong>${t.Place || "-"}</strong></td>
+                        <td>${new Date(t.Date).toLocaleDateString("en-GB")}</td>
+                        <td>${t.Event}</td>
+                        <td>${cleanTeamName}</td>
+                        <td>${getRoleIcon(t.Role)} ${t.Role}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                })
+                .catch(error => {
+                    tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#ff4655;">${error.message}</td></tr>`;
+                });
+        }
+
+        function normalize(value, min, max) {
+            return ((value - min) / (max - min)) * 100;
+        }
+
+      
+        function getPlacementClass(place) {
+        const normalized = (place || "").toString().toUpperCase();
+
+        if (normalized === "1") return "placement-gold";
+        if (normalized === "2") return "placement-silver";
+        if (normalized === "3") return "placement-bronze";
+        if (["Q", "QUALIFIED"].includes(normalized)) return "placement-qualify";
+        if (["DQ", "DISQUALIFIED"].includes(normalized)) return "placement-dq";
+        if (["NQ", "NOT QUALIFIED"].includes(normalized)) return "placement-nq";
+
+        return "placement-default";
+        }
+
+        function getRoleIcon(role) {
+        const icons = {
+            "Top": "🛡️",       // or 🗻
+            "Jungle": "🌲",    // or 🐾
+            "Mid": "🎯",       // or 🧠
+            "Bot": "🏹",       // or 💥
+            "Support": "🧙",   // or 🩺
+        };
+        return icons[role] || "❓";
+        }
+        function buildPlayerProfile(player) {
+            buildProfileHeader(player);
+            buildPlayerHighlights(player);
+            buildChampionStatsOverview(player);
+            // buildChampionMastery(player.champions);
+            buildTournamentHistory(player.name);
+
+            document.title = `${player.name} - LoL Player DNA | Arabian League`;
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            initVideoPlaceholder();
+        });
+
+    </script>
+     <script src="../js/video.js"></script>
+     <script src="../js/analytics.js"></script>
+</body>
+</html>
