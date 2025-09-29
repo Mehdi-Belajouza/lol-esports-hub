@@ -1,10 +1,3 @@
-# Arabian League
-
-
-The Arabian League project is an esports-focused platform designed to showcase and highlight players and teams within the Arabian esports scene. Inspired by professional standards like the EWC website, this project aims to provide a comprehensive and polished overview of the league, its players, and teams.
-
-
-
 
 # 🎮 Esports Hub - Professional Gaming Platform
 
@@ -251,20 +244,6 @@ Distributed under the MIT License. See `LICENSE` file for more information.
 - [ ] User authentication
 - [ ] Social media integration
 
----
-
-## 📊 Statistics
-
-<div align="center">
-
-![GitHub Stars](https://img.shields.io/github/stars/Mehdi-Belajouza/esports-hub?style=social)
-![GitHub Forks](https://img.shields.io/github/forks/Mehdi-Belajouza/esports-hub?style=social)
-![GitHub Issues](https://img.shields.io/github/issues/Mehdi-Belajouza/esports-hub)
-![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Mehdi-Belajouza/esports-hub)
-
-</div>
-
----
 
 ## 💡 Tips for Deployment
 
