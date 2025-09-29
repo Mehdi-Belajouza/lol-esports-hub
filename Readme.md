@@ -233,31 +233,6 @@ Contributions make the open-source community an amazing place to learn and creat
 
 Distributed under the MIT License. See `LICENSE` file for more information.
 
----
-
-## 📧 Contact
-
-**Project Maintainer**: Your Name
-- 📧 Email: your.email@example.com
-- 🐦 Twitter: [@yourhandle](https://twitter.com/yourhandle)
-- 💼 LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
-
-**Tunisian Esports Federation**
-- 🌐 Website: [www.tunisianesports.tn](#)
-- 📱 Facebook: [@TunisianEsports](#)
-- 📸 Instagram: [@tunisian_esports](#)
-
-**Project Link**: [https://github.com/Mehdi-Belajouza/esports-hub](https://github.com/Mehdi-Belajouza/esports-hub)
-
----
-
-## 🙏 Acknowledgments
-
-- **Esports World Cup** - Design inspiration
-- **Tunisian Esports Community** - Content and feedback
-- **Unsplash** - Placeholder images
-- **Google Fonts** - Inter font family
-- **All Contributors** - Thank you for your support!
 
 ---
 
@@ -302,12 +277,6 @@ git push origin gh-pages
 
 ### Netlify
 Simply drag and drop your project folder or connect your GitHub repo.
-
-### Vercel
-```bash
-vercel --prod
-```
-
 ---
 
 <div align="center">
