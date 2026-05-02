@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
 import RisingPlayers from '../components/RisingPlayers';
 import TopPlayersThisWeek from '../components/TopPlayersThisWeek';
 import GameSpotlight from '../components/GameSpotlight';
+import ScrollAnimationWrapper from '../components/ScrollAnimationWrapper';
+import { GameContext } from '../contexts/GameContext';
+import GameSelectionCard from '../components/GameSelectionCard';
 
 const Home = () => {
+  const { theme } = useContext(GameContext);
+
+  const style = {
+    ...Object.entries(theme).reduce((acc, [key, value]) => {
+      acc[`--${key}`] = value;
+      return acc;
+    }, {}),
+  };
+
   return (
-    <div className="bg-bg-primary text-text-primary">
+    <div style={style} className="bg-bg-primary text-text-primary">
       {/* Hero Section with Animated Background */}
       <div className="relative min-h-screen flex flex-col overflow-hidden">
         {/* Animated Gaming Background */}
@@ -30,7 +42,7 @@ const Home = () => {
           <header className="p-4">
             <div className="container mx-auto flex justify-between items-center max-w-screen-xl">
               <h1 className="text-2xl font-bold font-headings">
-                Esports Hub <span className="text-sm text-accent-primary">Tunisia</span>
+                Esports Hub <span className="text-sm text-accent-primary">MENA</span>
               </h1>
               <Link to="/dashboard" className="bg-accent-primary text-accent-text font-bold py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors">
                 Enter App
@@ -40,30 +52,41 @@ const Home = () => {
 
           {/* Hero Content */}
           <main className="flex-grow flex items-center">
-            <div className="container mx-auto max-w-screen-xl text-center py-20">
-              <h2 className="text-4xl md:text-6xl font-extrabold font-headings mb-4">
-                Discover Tunisia's Next<br />Esports Legends
-              </h2>
-              <p className="text-lg md:text-xl text-text-secondary max-w-3xl mx-auto mb-8">
-                The ultimate scouting platform for Tunisian talent in League of Legends, Valorant, and CS2. Explore player stats, rankings, and match history.
-              </p>
-              <Link to="/dashboard" className="group bg-accent-primary text-accent-text font-bold py-3 px-6 rounded-lg text-lg inline-flex items-center hover:bg-opacity-90 transition-transform transform hover:scale-105">
-                Start Scouting
-                <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
-              </Link>
+            <div className="container mx-auto max-w-screen-xl text-center py-20 flex flex-col md:flex-row items-center justify-center md:justify-between gap-12">
+              <div className="md:text-left">
+                <h2 className="text-4xl md:text-6xl font-extrabold font-headings mb-4">
+                  Discover Middle East and <br />North Africa's Next Esports Legends
+                </h2>
+                <p className="text-lg md:text-xl text-text-secondary max-w-xl mb-8">
+                  The ultimate scouting platform for talent in the Middle East and North Africa in League of Legends, Valorant, and CS2. Explore player stats, rankings, and match history.
+                </p>
+                <Link to="/dashboard" className="group bg-accent-primary text-accent-text font-bold py-3 px-6 rounded-lg text-lg inline-flex items-center hover:bg-opacity-90 transition-transform transform hover:scale-105">
+                  Start Scouting
+                  <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
+              <div className="flex-shrink-0">
+                <GameSelectionCard />
+              </div>
             </div>
           </main>
         </div>
       </div>
 
       {/* New Sections */}
-      <RisingPlayers />
-      <TopPlayersThisWeek />
-      <GameSpotlight />
+      <ScrollAnimationWrapper>
+        <RisingPlayers />
+      </ScrollAnimationWrapper>
+      <ScrollAnimationWrapper>
+        <TopPlayersThisWeek />
+      </ScrollAnimationWrapper>
+      <ScrollAnimationWrapper>
+        <GameSpotlight />
+      </ScrollAnimationWrapper>
 
       {/* Footer */}
       <footer className="p-8 text-center text-text-muted text-sm bg-bg-secondary">
-        <p>&copy; {new Date().getFullYear()} Esports Hub Tunisia. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Esports Hub MENA. All rights reserved.</p>
       </footer>
     </div>
   );

@@ -8,8 +8,8 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* About Section */}
           <div className="col-span-2 md:col-span-1">
-            <h3 className="text-lg font-headings font-bold text-text-primary mb-4">Esports Hub Tunisia</h3>
-            <p className="text-sm">The central hub for discovering and tracking the best esports talent in Tunisia. Data-driven insights for players, teams, and recruiters.</p>
+            <h3 className="text-lg font-headings font-bold text-text-primary mb-4">Esports Hub MENA</h3>
+            <p className="text-sm">The central hub for discovering and tracking the best esports talent in the Middle East and North Africa. Data-driven insights for players, teams, and recruiters.</p>
           </div>
 
           {/* Quick Links */}

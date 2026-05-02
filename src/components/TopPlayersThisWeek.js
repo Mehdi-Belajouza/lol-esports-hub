@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { gameData } from '../gameData';
+import RankIcon from './RankIcon';
 
 const TopPlayersThisWeek = () => {
   // Dummy data for top players
@@ -12,11 +13,11 @@ const TopPlayersThisWeek = () => {
   ];
 
   return (
-    <div className="py-12 bg-bg-secondary">
+    <div className="py-12 bg-bg-primary">
       <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-screen-xl">
         <h2 className="text-3xl font-bold font-headings text-text-primary mb-6 text-center">Top Players This Week</h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-bg-primary border border-border-subtle rounded-lg">
+          <table className="min-w-full bg-bg-secondary border border-border-subtle rounded-lg">
             <thead>
               <tr className="border-b border-border-subtle">
                 <th className="p-4 text-left text-sm font-semibold text-text-secondary uppercase tracking-wider">Rank</th>
@@ -31,7 +32,12 @@ const TopPlayersThisWeek = () => {
                   <td className="p-4 font-bold text-accent-primary">{player.rank}</td>
                   <td className="p-4 text-text-primary font-semibold">{player.name}</td>
                   <td className="p-4 text-text-secondary">{player.game}</td>
-                  <td className="p-4 text-text-secondary">{player.rankTier}</td>
+                  <td className="p-4">
+                    <div className="flex items-center gap-2">
+                      <RankIcon rank={player.rankTier} size="w-8 h-8" />
+                      <span className="text-text-secondary">{player.rankTier}</span>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
