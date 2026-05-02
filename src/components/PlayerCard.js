@@ -2,6 +2,45 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameContext } from '../contexts/GameContext';
 
+const rankImages = {
+  'League of Legends': {
+    Challenger: '/assets/ranks/lol/challenger.png',
+    Grandmaster: '/assets/ranks/lol/grandmaster.png',
+    Master: '/assets/ranks/lol/master.png',
+    Diamond: '/assets/ranks/lol/diamond.png',
+    Emerald: '/assets/ranks/lol/emerald.png',
+    Platinum: '/assets/ranks/lol/platinum.png',
+    Gold: '/assets/ranks/lol/gold.png',
+    Silver: '/assets/ranks/lol/silver.png',
+    Bronze: '/assets/ranks/lol/bronze.png',
+    Iron: '/assets/ranks/lol/iron.png',
+  },
+  Valorant: {
+    Radiant: '/assets/ranks/valorant/radiant.png',
+    Immortal: '/assets/ranks/valorant/immortal3.png',
+    Diamond: '/assets/ranks/valorant/diamond3.png',
+    Platinum: '/assets/ranks/valorant/platinum3.png',
+    Gold: '/assets/ranks/valorant/gold3.png',
+  },
+  CS2: {
+    'Global Elite': '/assets/ranks/csgo/global_elite.png',
+    'Supreme': '/assets/ranks/csgo/supreme.png',
+    'Eagle': '/assets/ranks/csgo/eagle.png',
+  },
+};
+
+const rankColors = {
+  Challenger: 'from-yellow-900/60 to-bg-secondary',
+  Grandmaster: 'from-red-900/60 to-bg-secondary',
+  Master: 'from-purple-900/60 to-bg-secondary',
+  Diamond: 'from-blue-900/60 to-bg-secondary',
+  Emerald: 'from-emerald-900/60 to-bg-secondary',
+  Platinum: 'from-cyan-900/60 to-bg-secondary',
+  Gold: 'from-yellow-800/60 to-bg-secondary',
+  Radiant: 'from-yellow-900/60 to-bg-secondary',
+  Immortal: 'from-red-900/60 to-bg-secondary',
+};
+
 const PlayerCard = ({ player }) => {
   const { activeGame } = useContext(GameContext);
   const navigate = useNavigate();
@@ -10,15 +49,33 @@ const PlayerCard = ({ player }) => {
     navigate(`/player/${player.tag}`);
   };
 
+  const rankImg = rankImages[activeGame]?.[player.rank];
+  const gradient = rankColors[player.rank] || 'from-bg-primary to-bg-secondary';
+
   const renderGameSpecificStats = () => {
     const stats = player.stats;
     switch (activeGame) {
       case 'League of Legends':
-        return <p className="text-xs sm:text-sm text-text-secondary">KDA: <span className="font-bold text-text-primary">{stats.kda}</span></p>;
+        return (
+          <div className="text-right">
+            <p className="text-xs text-text-secondary">KDA</p>
+            <p className="text-sm font-bold text-text-primary">{stats.kda}</p>
+          </div>
+        );
       case 'Valorant':
-        return <p className="text-xs sm:text-sm text-text-secondary">HS%: <span className="font-bold text-text-primary">{stats.hs_percent}%</span></p>;
+        return (
+          <div className="text-right">
+            <p className="text-xs text-text-secondary">HS%</p>
+            <p className="text-sm font-bold text-text-primary">{stats.hs_percent}%</p>
+          </div>
+        );
       case 'CS2':
-        return <p className="text-xs sm:text-sm text-text-secondary">ADR: <span className="font-bold text-text-primary">{stats.adr}</span></p>;
+        return (
+          <div className="text-right">
+            <p className="text-xs text-text-secondary">ADR</p>
+            <p className="text-sm font-bold text-text-primary">{stats.adr}</p>
+          </div>
+        );
       default:
         return null;
     }
@@ -26,31 +83,66 @@ const PlayerCard = ({ player }) => {
 
   return (
     <div
-      className="bg-bg-secondary rounded-lg border border-border-subtle overflow-hidden transform hover:-translate-y-1 transition-all duration-200 ease-out cursor-pointer"
+      className="bg-bg-secondary rounded-lg border border-border-subtle overflow-hidden transform hover:-translate-y-1 transition-all duration-200 ease-out cursor-pointer group"
       onClick={handleCardClick}
     >
-      <div className="h-20 sm:h-24 bg-cover bg-center" style={{ backgroundImage: `url('https://source.unsplash.com/random/400x200?${activeGame}')` }}></div>
-      <div className="p-3 sm:p-4">
-        <div className="flex items-center">
-          <img className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-border-strong -mt-8 sm:-mt-12" src={player.avatar} alt={player.name} />
-          <div className="ml-3 sm:ml-4">
-            <h3 className="text-base sm:text-lg font-bold text-text-primary">{player.name} <span className="text-accent-primary text-xs sm:text-sm">#{player.tag}</span></h3>
-            <p className="text-xs sm:text-sm text-text-secondary">{player.role}</p>
+      {/* Banner with rank image */}
+      <div className={`relative z-0 h-24 bg-gradient-to-b ${gradient} flex items-center justify-center`}>
+        {rankImg ? (
+          <img
+            src={rankImg}
+            alt={player.rank}
+            className="h-16 w-16 object-contain drop-shadow-lg group-hover:scale-110 transition-transform duration-200"
+          />
+        ) : (
+          <div className="h-16 w-16 rounded-full bg-bg-primary border border-border-subtle flex items-center justify-center">
+            <span className="text-xs text-text-secondary font-bold">{player.rank?.charAt(0)}</span>
+          </div>
+        )}
+        {/* LP badge */}
+        {player.lp && (
+          <span className="absolute top-2 right-2 text-xs font-semibold text-text-secondary bg-bg-primary/70 backdrop-blur-sm px-2 py-0.5 rounded-full border border-border-subtle">
+            {player.lp}
+          </span>
+        )}
+        {/* Pro badge */}
+        {player.isPro && (
+          <span className="absolute top-2 left-2 text-xs font-bold text-accent-primary bg-bg-primary/70 backdrop-blur-sm px-2 py-0.5 rounded-full border border-accent-primary/30">
+            PRO
+          </span>
+        )}
+      </div>
+
+      {/* Avatar overlapping banner */}
+      <div className="relative z-10 px-4 pb-4">
+        <div className="flex items-end gap-3 -mt-6 mb-3">
+          <img
+            className="w-12 h-12 rounded-full border-2 border-border-subtle ring-2 ring-bg-secondary object-cover flex-shrink-0"
+            src={player.avatar}
+            alt={player.name}
+          />
+          <div className="min-w-0 pb-1">
+            <h3 className="text-sm font-bold text-text-primary leading-tight truncate">
+              {player.name}
+              <span className="text-accent-primary font-normal text-xs ml-1">#{player.tag}</span>
+            </h3>
+            <p className="text-xs text-text-secondary truncate">{player.role}</p>
           </div>
         </div>
-        <div className="mt-3 sm:mt-4 flex justify-between items-center">
+
+        {/* Stats row */}
+        <div className="flex justify-between items-center pt-3 border-t border-border-subtle">
           <div>
-            <p className="text-xs text-text-muted">Rank</p>
-            <p className="text-sm sm:text-md font-semibold text-text-primary">{player.rank}</p>
+            <p className="text-xs text-text-secondary">Rank</p>
+            <p className="text-sm font-semibold text-text-primary">{player.rank}</p>
           </div>
-          <div className="text-right">
-            {renderGameSpecificStats()}
-          </div>
+          {renderGameSpecificStats()}
         </div>
-        <div className="mt-2 sm:mt-3">
-          <p className="text-xs text-text-muted">Achievement</p>
-          <p className="text-xs sm:text-sm text-text-primary truncate">{player.achievement}</p>
-        </div>
+
+        {/* Achievement */}
+        <p className="text-xs text-text-secondary mt-2 truncate" title={player.achievement}>
+          {player.achievement}
+        </p>
       </div>
     </div>
   );

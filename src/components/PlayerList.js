@@ -76,11 +76,7 @@ const PlayerList = () => {
         <FilterDropdown label="Team" />
         <FilterDropdown label="Nationality" />
 
-        {/* WNB pill */}
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-bg-secondary border border-border-subtle rounded-full text-sm text-text-secondary hover:border-accent-primary hover:text-text-primary transition-all duration-200">
-          <span className="w-2 h-2 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50"></span>
-          WNB
-        </button>
+       
       </div>
 
       {/* Filters Row 2 */}
