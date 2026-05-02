@@ -12,7 +12,7 @@ const Header = () => {
     <header className={`bg-bg-secondary border-b border-border-subtle p-4 transition-colors duration-200`}>
       <div className="container mx-auto flex justify-between items-center max-w-screen-xl">
         <Link to="/" className="text-2xl font-bold font-headings">
-          Esports Hub <span className={`text-sm text-accent-primary`}>Tunisia</span>
+          Esports Hub <span className={`text-sm text-accent-primary`}>MENA</span>
         </Link>
 
         {/* Desktop Nav */}
