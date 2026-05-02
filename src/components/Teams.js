@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaSearch } from 'react-icons/fa';
 
 const teamsData = [
   {
@@ -27,7 +28,17 @@ const teamsData = [
 const Teams = () => {
   return (
     <div className="bg-bg-secondary p-6 rounded-lg border border-border-subtle">
-      <h2 className="text-2xl font-bold font-headings text-text-primary mb-6">Esports Teams</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold font-headings text-text-primary">Esports Teams</h2>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search Teams..."
+            className="bg-bg-primary border border-border-subtle rounded-full py-1.5 pl-8 pr-3 text-sm text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
+          />
+          <FaSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-secondary" />
+        </div>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {teamsData.map((team, index) => (
           <div key={index} className="bg-bg-primary border border-border-subtle rounded-lg p-4 flex flex-col items-center text-center hover:shadow-lg transition-shadow duration-200">

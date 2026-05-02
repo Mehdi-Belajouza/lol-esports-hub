@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { GameContext } from '../contexts/GameContext';
+import { FaSearch } from 'react-icons/fa';
 
 const Rankings = () => {
   const { gamePlayers, activeGame } = useContext(GameContext);
@@ -46,9 +47,20 @@ const Rankings = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-6 lg:p-8 max-w-screen-xl">
-      <div className="bg-bg-secondary rounded-lg overflow-hidden">
-        <table className="min-w-full">
+    <div className="bg-bg-secondary p-6 rounded-lg border border-border-subtle">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold font-headings text-text-primary">Team Rankings</h2>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search Rankings..."
+            className="bg-bg-primary border border-border-subtle rounded-full py-1.5 pl-8 pr-3 text-sm text-text-secondary focus:outline-none focus:ring-1 focus:ring-accent-primary"
+          />
+          <FaSearch className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-secondary" />
+        </div>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-sm text-left text-text-secondary">
           <thead className="bg-bg-tertiary">
             <tr>
               {getRankingHeaders().map((header) => (

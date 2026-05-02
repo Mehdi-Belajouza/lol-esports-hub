@@ -47,7 +47,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 border-t border-border-subtle pt-6 text-center text-sm">
-          <p>&copy; {new Date().getFullYear()} Esports Hub Tunisia. All rights reserved. Not affiliated with Riot Games or Valve Corp.</p>
+          <p>&copy; {new Date().getFullYear()} Esports Hub MENA. All rights reserved. Not affiliated with Riot Games or Valve Corp.</p>
         </div>
       </div>
     </footer>

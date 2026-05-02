@@ -14,7 +14,7 @@ const GameSpotlight = () => {
           <h2 className="text-3xl font-bold font-headings text-text-primary mb-2">
             <span className="text-accent-primary">{game.name}</span> Spotlight
           </h2>
-          <p className="text-text-secondary mb-6">A look at the top talent in the Tunisian {game.name} scene.</p>
+          <p className="text-text-secondary mb-6">A look at the top talent in the MENA {game.name} scene.</p>
           <div className="flex flex-wrap justify-center gap-4">
             {topPlayers.map((player, index) => (
               <Link to={`/player/${player.tag}`} key={index} className="bg-bg-secondary border border-border-subtle rounded-lg p-3 flex flex-col items-center w-32 hover:scale-105 transition-transform duration-200">
