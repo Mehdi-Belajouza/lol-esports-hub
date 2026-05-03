@@ -4,75 +4,79 @@ import { useInView } from 'react-intersection-observer';
 const MoltenDivider = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  // A more "hand-drawn" organic wave
-  const PATH = "M0 25 C 150 25, 150 5, 300 5 C 450 5, 450 45, 600 45 C 750 45, 750 5, 900 5 C 1050 5, 1050 25, 1200 25";
-  const DASH = 1300;
-
   return (
-    <div ref={ref} className="relative w-full overflow-hidden bg-[#0b0f14] py-14">
-      <svg
-        viewBox="0 0 1200 50"
-        className="w-full h-10 opacity-90"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          {/* Metallic Copper/Amber Gradient */}
-          <linearGradient id="copper-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#78350f" stopOpacity="0" />   {/* Deep Amber */}
-            <stop offset="20%" stopColor="#b45309" stopOpacity="0.5" /> {/* Amber 700 */}
-            <stop offset="50%" stopColor="#fbbf24" stopOpacity="1" />   {/* Amber 400 (The "Highlight") */}
-            <stop offset="80%" stopColor="#b45309" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#78350f" stopOpacity="0" />
-          </linearGradient>
-          
-          {/* Heat Glow Filter */}
-          <filter id="heat-glow">
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-        </defs>
+    <div ref={ref} className="relative w-full h-32 bg-[#0b0f14] flex items-center justify-center overflow-hidden">
+      
+      {/* 1. The Merge Effect: Subtle top/bottom radial fade */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.03)_0%,transparent_70%)]" />
+      </div>
 
-        {/* The "Shadow" Trace (gives the line weight) */}
-        <path
-          d={PATH}
-          fill="none"
-          stroke="#1e1b1e" 
-          strokeWidth="150"
-          strokeLinecap="round"
-        />
-
-        {/* The Animated Copper Stream */}
-        <path
-          d={PATH}
-          fill="none"
-          stroke="url(#copper-gradient)"
-          strokeWidth="10"
-          strokeLinecap="round"
-          filter="url(#heat-glow)"
+      {/* 2. The Core Line - Minimalist & Sleek */}
+      <div className="relative w-full max-w-4xl px-10 flex items-center justify-center">
+        
+        {/* Left Wing Line */}
+        <div 
+          className={`h-[1px] flex-grow transition-all duration-1000 ease-out origin-right ${
+            inView ? 'opacity-20 scale-x-100' : 'opacity-0 scale-x-0'
+          }`}
           style={{
-            strokeDasharray: DASH,
-            strokeDashoffset: inView ? 0 : DASH,
-            transition: 'stroke-dashoffset 2.2s cubic-bezier(0.22, 1, 0.36, 1)',
+            background: 'linear-gradient(to left, #fbbf24, transparent)'
           }}
         />
 
-        {/* Small Sparkling Particle */}
-        <circle r="1.5" fill="#fef3c7">
-          <animateMotion 
-            dur="4s" 
-            repeatCount="indefinite" 
-            path={PATH}
+        {/* Centerpiece: The "Molten" Node */}
+        <div className="relative mx-6">
+          {/* Outer Ambient Pulse */}
+          <div 
+            className={`absolute inset-0 blur-md rounded-full bg-amber-500 transition-all duration-[2000ms] ${
+              inView ? 'opacity-20 scale-[4]' : 'opacity-0 scale-0'
+            }`} 
           />
-        </circle>
-      </svg>
-      
-      {/* Visual Break Centerpiece */}
-      <div className="absolute inset-0 flex items-center justify-center">
+          
+          {/* Inner Sharp Point */}
+          <div 
+            className={`relative z-10 w-1.5 h-1.5 rotate-45 border border-amber-400 bg-[#0b0f14] transition-all duration-700 delay-300 ${
+              inView ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+            }`}
+          />
+
+          {/* Vertical Merge Flare (Merges with elements above/below) */}
+          <div 
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-24 transition-all duration-1000 delay-500 ${
+              inView ? 'opacity-40' : 'opacity-0'
+            }`}
+            style={{
+              background: 'linear-gradient(to bottom, transparent, #fbbf24, transparent)'
+            }}
+          />
+        </div>
+
+        {/* Right Wing Line */}
         <div 
-          className={`w-1 h-1 rounded-full bg-amber-400 shadow-[0_0_15px_#fbbf24] transition-all duration-1000 delay-500 ${
-            inView ? 'opacity-40 scale-150' : 'opacity-0 scale-0'
-          }`} 
+          className={`h-[1px] flex-grow transition-all duration-1000 ease-out origin-left ${
+            inView ? 'opacity-20 scale-x-100' : 'opacity-0 scale-x-0'
+          }`}
+          style={{
+            background: 'linear-gradient(to right, #fbbf24, transparent)'
+          }}
         />
+      </div>
+
+      {/* 3. Floating Particles (Very subtle) */}
+      <div className={`absolute inset-0 transition-opacity duration-1000 ${inView ? 'opacity-100' : 'opacity-0'}`}>
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-0.5 h-0.5 bg-amber-200 rounded-full animate-pulse"
+            style={{
+              left: `${40 + (i * 10)}%`,
+              top: '50%',
+              animationDelay: `${i * 0.5}s`,
+              boxShadow: '0 0 8px #fbbf24'
+            }}
+          />
+        ))}
       </div>
     </div>
   );

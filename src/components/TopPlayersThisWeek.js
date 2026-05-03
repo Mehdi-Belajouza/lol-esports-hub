@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaCrown } from 'react-icons/fa';
+import { FaCrown, FaChevronRight } from 'react-icons/fa';
 import RankIcon from './RankIcon';
 
 const TopPlayersThisWeek = () => {
@@ -11,104 +11,135 @@ const TopPlayersThisWeek = () => {
     { rank: 5, name: 'Spectre', game: 'Valorant', rankTier: 'Immortal', points: '1,820' },
   ];
 
-  // Helper to color code the top 3 spots
   const getRankStyle = (rank) => {
     switch(rank) {
-      case 1: return "text-amber-400 bg-amber-400/10 border-amber-400/20";
-      case 2: return "text-slate-300 bg-bg-tertiary border-border-subtle";
-      case 3: return "text-orange-400 bg-orange-400/10 border-orange-400/20";
-      default: return "text-text-secondary bg-bg-tertiary border-border-subtle";
+      case 1: return "border-amber-500/50 text-amber-400 bg-amber-500/5";
+      case 2: return "border-slate-400/50 text-slate-300 bg-slate-400/5";
+      case 3: return "border-orange-600/50 text-orange-500 bg-orange-600/5";
+      default: return "border-white/10 text-white/40 bg-white/5";
     }
   };
 
   return (
-    <div className="py-20 bg-bg-primary">
-      <div className="container mx-auto px-6 max-w-screen-lg">
+    <div className="py-24 bg-[#121821] relative overflow-hidden">
+      {/* Subtle Background Glows */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-primary/5 rounded-full blur-[120px] pointer-events-none" />
+      
+      <div className="container mx-auto px-6 max-w-screen-lg relative z-10">
         
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <h2 className="text-3xl md:text-4xl font-black text-text-primary mb-2">
-              Weekly <span className="text-accent-primary">Leaderboard</span>
-            </h2>
-            <p className="text-text-secondary">The most dominant players over the last 7 days.</p>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="h-px w-8 bg-accent-primary" />
+              <span className="text-[10px] font-black tracking-[0.4em] text-accent-primary uppercase">Elite Performance</span>
+            </div>
+            <h1 className="text-5xl font-black text-white tracking-tighter italic uppercase leading-none">
+              Weekly <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Leaderboard</span>
+            </h1>
           </div>
-          <div className="hidden md:block text-right">
-            <span className="text-xs font-bold text-text-secondary uppercase tracking-widest">Next Update</span>
-            <p className="text-text-primary font-mono">14:22:05</p>
+          
+          <div className="bg-white/5 border border-white/10 p-3 rounded-xl flex items-center gap-4">
+            <div className="text-right">
+              <span className="block text-[9px] font-black text-white/30 uppercase tracking-widest">Next Refresh</span>
+              <p className="text-white font-mono font-bold">14:22:05</p>
+            </div>
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           </div>
         </div>
 
-        <div className="space-y-3">
-          {/* Header Row - Hidden on small screens */}
-          <div className="hidden md:grid grid-cols-12 px-8 py-4 text-xs font-bold text-text-secondary uppercase tracking-widest">
-            <div className="col-span-1">Rank</div>
-            <div className="col-span-5">Player</div>
-            <div className="col-span-3">Game</div>
-            <div className="col-span-3 text-right">Rating / Tier</div>
+        {/* Leaderboard Table */}
+        <div className="space-y-4">
+          {/* Desktop Header */}
+          <div className="hidden md:grid grid-cols-12 px-10 mb-2 text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">
+            <div className="col-span-1">Pos</div>
+            <div className="col-span-5">Competitor</div>
+            <div className="col-span-3">Division</div>
+            <div className="col-span-3 text-right">Performance Rating</div>
           </div>
 
-          {/* Player Rows */}
           {topPlayers.map((player) => (
             <div
               key={player.rank}
               className="
-                grid grid-cols-1 md:grid-cols-12 items-center
-                px-6 py-4 md:px-8
-                bg-bg-secondary
-                border border-border-subtle rounded-2xl
-                transition-all duration-300
-                hover:border-accent-primary/40 hover:bg-bg-tertiary/60 hover:shadow-lg hover:shadow-accent-primary/5
-                group
+                relative group grid grid-cols-1 md:grid-cols-12 items-center
+                px-6 py-5 md:px-10
+                bg-[#1a212d] border border-white/5 rounded-xl
+                hover:border-accent-primary/30 hover:bg-[#1e2633]
+                transition-all duration-300 transform-gpu hover:-translate-y-1
               "
             >
-              {/* Rank Column */}
+              {/* Top 3 Left Border Accent */}
+              {player.rank <= 3 && (
+                <div className={`absolute left-0 top-1/2 -translate-y-1/2 h-2/3 w-1 rounded-r-full shadow-[0_0_15px_rgba(0,0,0,0.5)] 
+                  ${player.rank === 1 ? 'bg-amber-500' : player.rank === 2 ? 'bg-slate-400' : 'bg-orange-500'}`} 
+                />
+              )}
+
+              {/* Rank Badge */}
               <div className="col-span-1 flex items-center mb-4 md:mb-0">
                 <div className={`
-                  w-10 h-10 rounded-xl border flex items-center justify-center font-black text-lg
+                  w-9 h-9 rounded-lg border flex items-center justify-center font-black text-sm
+                  transition-transform group-hover:scale-110
                   ${getRankStyle(player.rank)}
                 `}>
-                  {player.rank <= 3 ? <FaCrown className="text-sm" /> : player.rank}
+                  {player.rank <= 3 ? <FaCrown /> : player.rank}
                 </div>
               </div>
 
-              {/* Name Column */}
-              <div className="col-span-5 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-bg-tertiary border border-border-subtle flex items-center justify-center text-text-secondary font-bold">
-                  {player.name.charAt(0)}
+              {/* Player Info */}
+              <div className="col-span-5 flex items-center gap-5">
+                <div className="relative">
+                   <div className="w-12 h-12 rounded-xl bg-[#121821] border border-white/5 flex items-center justify-center text-white/20 font-black text-xl overflow-hidden">
+                     {player.name.charAt(0)}
+                     {/* Subtle diagonal overlay on the avatar box */}
+                     <div className="absolute inset-0 bg-gradient-to-tr from-accent-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                   </div>
                 </div>
                 <div>
-                  <div className="text-text-primary font-bold text-lg group-hover:text-accent-primary transition-colors">
+                  <div className="text-white font-black text-lg tracking-tight group-hover:text-accent-primary transition-colors uppercase italic">
                     {player.name}
                   </div>
-                  <div className="text-xs text-text-secondary font-medium md:hidden uppercase tracking-wider">
+                  <div className="text-[10px] text-white/40 font-bold uppercase tracking-widest">
                     {player.game}
                   </div>
                 </div>
               </div>
 
-              {/* Game Column (Desktop Only) */}
-              <div className="hidden md:block col-span-3">
-                <span className="text-text-secondary font-medium">{player.game}</span>
+              {/* Rank Tier (Desktop) */}
+              <div className="hidden md:flex col-span-3 items-center gap-3">
+                <RankIcon rank={player.rankTier} size="w-6 h-6" className="opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all" />
+                <span className="text-white/60 font-bold text-xs uppercase tracking-tighter">{player.rankTier}</span>
               </div>
 
-              {/* Rank Tier Column */}
-              <div className="col-span-3 flex items-center justify-between md:justify-end gap-3 mt-4 md:mt-0 border-t border-border-subtle/50 md:border-0 pt-4 md:pt-0">
+              {/* Rating / Points */}
+              <div className="col-span-3 flex items-center justify-between md:justify-end gap-6 mt-6 md:mt-0 pt-4 md:pt-0 border-t border-white/5 md:border-0">
                 <div className="text-right">
-                  <div className="text-text-primary font-mono font-bold">{player.points}</div>
-                  <div className="text-[10px] text-text-secondary uppercase font-bold tracking-tighter">{player.rankTier}</div>
+                  <div className="text-white font-mono font-black text-xl group-hover:text-accent-primary transition-colors tracking-tighter">
+                    {player.points}
+                    <span className="text-[10px] text-accent-primary/50 ml-1 font-sans uppercase">pts</span>
+                  </div>
                 </div>
-                <div className="bg-bg-primary/80 p-2 rounded-xl border border-border-subtle group-hover:scale-110 transition-transform">
-                  <RankIcon rank={player.rankTier} size="w-7 h-7" />
+                <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-white/20 group-hover:bg-accent-primary group-hover:text-[#121821] transition-all">
+                  <FaChevronRight size={12} />
                 </div>
+              </div>
+
+              {/* Corner "Tech" Decal */}
+              <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity">
+                 <div className="absolute top-0 right-0 w-[2px] h-8 bg-accent-primary/40 rotate-45 translate-x-4 -translate-y-2" />
               </div>
             </div>
           ))}
         </div>
 
-        {/* Call to action */}
-        <div className="mt-8 text-center">
-          <button className="text-text-secondary hover:text-accent-primary text-sm font-bold transition-colors underline decoration-border-subtle underline-offset-8">
-            View Full Global Leaderboard
+        {/* Footer CTA */}
+        <div className="mt-12 flex justify-center">
+          <button className="group relative px-8 py-4 bg-transparent overflow-hidden">
+            <span className="relative z-10 text-white font-black text-xs uppercase tracking-[0.3em] group-hover:text-accent-primary transition-colors">
+              Expand Global Ranking
+            </span>
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-[2px] bg-white/20 group-hover:w-full group-hover:bg-accent-primary transition-all duration-500" />
           </button>
         </div>
 

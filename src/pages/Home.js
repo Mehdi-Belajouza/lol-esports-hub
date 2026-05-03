@@ -8,6 +8,7 @@ import ScrollAnimationWrapper from '../components/ScrollAnimationWrapper';
 import SectionDivider from '../components/SectionDivider';
 import { GameContext } from '../contexts/GameContext';
 import GameSelectionCard from '../components/GameSelectionCard';
+import MenaHero from '../components/MenaHero';
 
 const Home = () => {
   const { theme } = useContext(GameContext);
@@ -75,6 +76,9 @@ const Home = () => {
       </div>
 
       {/* New Sections */}
+      <ScrollAnimationWrapper>
+        <MenaHero />
+      </ScrollAnimationWrapper>
       <ScrollAnimationWrapper>
         <RisingPlayers />
       </ScrollAnimationWrapper>

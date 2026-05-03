@@ -1,6 +1,6 @@
 import React, { useRef, useCallback } from 'react';
 import { gameData } from '../gameData';
-import { FaArrowUp, FaFire } from 'react-icons/fa';
+import { FaArrowUp, FaChevronRight } from 'react-icons/fa';
 import RankIcon from './RankIcon';
 
 const TiltCard = ({ children }) => {
@@ -14,17 +14,19 @@ const TiltCard = ({ children }) => {
     const rect = card.getBoundingClientRect();
     const nx = (e.clientX - rect.left) / rect.width - 0.5;
     const ny = (e.clientY - rect.top) / rect.height - 0.5;
-    const rotateX = -ny * 12;
-    const rotateY = nx * 12;
-    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
-    card.style.transition = 'transform 0.08s ease-out, border-color 0.3s';
+    
+    const rotateX = -ny * 14;
+    const rotateY = nx * 14;
+    
+    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+    
     if (glareRef.current) {
-      glareRef.current.style.background = `radial-gradient(circle at ${(nx + 0.5) * 100}% ${(ny + 0.5) * 100}%, rgba(255,255,255,0.10) 0%, transparent 65%)`;
+      glareRef.current.style.background = `radial-gradient(circle at ${(nx + 0.5) * 100}% ${(ny + 0.5) * 100}%, rgba(255,255,255,0.12) 0%, transparent 70%)`;
       glareRef.current.style.opacity = '1';
     }
     if (underlightRef.current) {
-      underlightRef.current.style.transform = `translateX(${nx * 18}px)`;
-      underlightRef.current.style.opacity = '0.28';
+      underlightRef.current.style.transform = `translateX(${nx * 25}px) translateY(${ny * 10}px)`;
+      underlightRef.current.style.opacity = '0.35';
     }
   }, []);
 
@@ -32,42 +34,40 @@ const TiltCard = ({ children }) => {
     const card = cardRef.current;
     if (card) {
       card.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0px)';
-      card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.3s';
     }
     if (glareRef.current) glareRef.current.style.opacity = '0';
     if (underlightRef.current) {
       underlightRef.current.style.opacity = '0';
-      underlightRef.current.style.transform = 'translateX(0)';
     }
   }, []);
 
   return (
-    <div className="relative" style={{ perspective: '900px' }}>
-      {/* Floating underlight — stays flat while card tilts */}
+    <div className="relative" style={{ perspective: '1200px' }}>
       <div
         ref={underlightRef}
-        className="absolute inset-x-8 rounded-full blur-2xl pointer-events-none"
+        className="absolute inset-x-4 rounded-full blur-[40px] pointer-events-none"
         style={{
           background: 'var(--accent-primary)',
-          height: '28%',
-          top: '68%',
+          height: '40%',
+          top: '60%',
           opacity: 0,
-          transition: 'opacity 0.4s ease, transform 0.4s ease',
+          transition: 'opacity 0.5s ease, transform 0.1s linear',
         }}
       />
-      {/* Card with 3D tilt */}
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="group relative rounded-2xl border border-border-subtle bg-bg-secondary p-6 overflow-hidden hover:border-accent-primary/40"
-        style={{ transformStyle: 'preserve-3d', transition: 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.3s' }}
+        className="group relative rounded-br-[3rem] rounded-tl-xl rounded-tr-xl rounded-bl-xl border border-white/10 bg-[#1a212d] p-0 overflow-hidden hover:border-accent-primary/40"
+        style={{ 
+          transformStyle: 'preserve-3d', 
+          transition: 'transform 0.1s ease-out, border-color 0.4s' 
+        }}
       >
-        {/* Glare highlight that follows the cursor */}
         <div
           ref={glareRef}
-          className="absolute inset-0 pointer-events-none rounded-2xl"
-          style={{ opacity: 0, zIndex: 10, transition: 'opacity 0.2s ease' }}
+          className="absolute inset-0 pointer-events-none z-50"
+          style={{ opacity: 0, transition: 'opacity 0.3s ease' }}
         />
         {children}
       </div>
@@ -83,65 +83,84 @@ const RisingPlayers = () => {
   ].slice(0, 8);
 
   return (
-    // Background: Deep Slate (not black)
-    <div className="relative py-20 bg-bg-primary overflow-hidden">
+    <div className="relative py-24 bg-[#121821] overflow-hidden">
       
-      {/* Decorative Glows for depth */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent-primary/10 rounded-full blur-[120px]" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent-secondary/10 rounded-full blur-[120px]" />
+      {/* MENA Background - Color preserved but blended */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-20 pointer-events-none select-none">
+        <img 
+          src="/assets/home/MENA.png" 
+          alt="MENA Region" 
+          className="w-full max-w-[1100px] object-contain filter brightness-90 contrast-110"
+          style={{
+            maskImage: 'radial-gradient(circle, black 20%, transparent 75%)',
+            WebkitMaskImage: 'radial-gradient(circle, black 20%, transparent 75%)'
+          }}
+        />
+      </div>
 
       <div className="relative z-10 container mx-auto px-6 max-w-screen-xl">
-        
-        <div className="flex flex-col items-center mb-16">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-accent-primary/10 border border-accent-primary/20 text-accent-primary text-xs font-bold uppercase tracking-wider mb-4">
-            <FaFire className="text-[10px]" />
-            On the Rise
+        <div className="flex flex-col items-center mb-20 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-4">
+             <span className="w-1.5 h-1.5 rounded-full bg-accent-primary animate-pulse" />
+             <span className="text-[9px] font-black tracking-[0.3em] text-white/60 uppercase">Live Performance Tracking</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-black text-text-primary text-center mb-4">
-            Rising <span className="text-accent-primary">Players</span>
-          </h2>
-          <p className="text-text-secondary text-center max-w-xl text-lg">
-            The next generation of champions climbing the regional leaderboards.
-          </p>
+          <h1 className="text-6xl font-black text-white tracking-tighter italic uppercase">
+            Rising <span className="text-accent-primary">Talent</span>
+          </h1>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {risingPlayers.map((player, index) => (
             <TiltCard key={index}>
-              {/* Trend Badge */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-1.5 text-emerald-400 font-bold text-[10px] uppercase bg-emerald-500/10 px-2 py-1 rounded-md">
-                  <FaArrowUp />
-                  Trending
-                </div>
-                <div className="bg-bg-primary/80 p-1.5 rounded-lg border border-border-subtle">
-                  <RankIcon rank={player.rank} size="w-6 h-6" />
-                </div>
-              </div>
-
-              {/* Avatar with Custom Ring */}
-              <div className="flex flex-col items-center text-center">
-                <div className="relative mb-4">
-                  <div className="absolute inset-0 bg-accent-primary rounded-2xl blur-md opacity-0 group-hover:opacity-20 transition-opacity" />
-                  <img
-                    src={player.avatar}
-                    alt={player.name}
-                    className="relative w-20 h-20 rounded-2xl object-cover border-2 border-border-subtle group-hover:border-accent-primary/50 transition-colors"
-                  />
+              {/* Top Accent Glow */}
+              <div className="h-1 w-full bg-gradient-to-r from-transparent via-accent-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="relative p-6 h-full flex flex-col">
+                <div className="flex justify-between items-start mb-8">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-1 text-emerald-400 font-black text-[9px] uppercase bg-emerald-500/10 px-2 py-0.5 rounded-sm border border-emerald-500/20">
+                      <FaArrowUp size={8} /> Trending
+                    </div>
+                  </div>
+                  <div className="opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 transform-gpu">
+                    <RankIcon rank={player.rank} size="w-10 h-10" />
+                  </div>
                 </div>
 
-                <h3 className="font-bold text-text-primary text-xl mb-1 group-hover:text-accent-primary transition-colors">
-                  {player.name}
-                </h3>
+                <div className="flex items-center gap-5 mb-8">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute -inset-1 bg-gradient-to-tr from-accent-primary/40 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity blur-sm" />
+                    <img
+                      src={player.avatar}
+                      alt={player.name}
+                      className="relative w-16 h-16 rounded-lg object-cover transition-all duration-500 border border-white/10"
+                    />
+                  </div>
+                  
+                  <div className="flex flex-col overflow-hidden text-left">
+                    <h3 className="font-black text-white text-xl tracking-tighter truncate uppercase group-hover:text-accent-primary transition-colors">
+                      {player.name}
+                    </h3>
+                    <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest truncate">
+                      {player.game || 'Pro Player'}
+                    </span>
+                  </div>
+                </div>
 
-                <span className="px-3 py-0.5 rounded-full bg-bg-primary text-text-secondary text-xs font-medium border border-border-subtle">
-                  {player.game || (player.tag.includes('valo') ? 'Valorant' : 'LoL')}
-                </span>
-              </div>
+                <div className="mt-auto pt-4 border-t border-white/10 flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <span className="text-[8px] font-black text-white/30 uppercase tracking-tighter">Performance</span>
+                    <span className="text-xs font-bold text-emerald-400">+14.2%</span>
+                  </div>
+                  
+                  <button className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-white group-hover:bg-accent-primary group-hover:text-[#121821] transition-all duration-300">
+                    <FaChevronRight size={10} />
+                  </button>
+                </div>
 
-              {/* Decorative background element for the card */}
-              <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity">
-                <RankIcon rank={player.rank} size="w-16 h-16" />
+                {/* Background Corner Decal */}
+                <div className="absolute -bottom-2 -right-2 w-24 h-24 bg-white/5 rotate-12 translate-x-8 translate-y-8 group-hover:translate-x-4 group-hover:translate-y-4 transition-transform duration-700 pointer-events-none" 
+                     style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 30% 100%)' }} />
               </div>
             </TiltCard>
           ))}

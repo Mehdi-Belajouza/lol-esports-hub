@@ -1,207 +1,161 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 import { GameContext } from '../contexts/GameContext';
-import { FaSearch, FaChevronDown } from 'react-icons/fa';
+import { FaSearch, FaChevronDown, FaCrown } from 'react-icons/fa';
 import { MdSort } from 'react-icons/md';
 
+// Reusable Sub-components
 const FilterDropdown = ({ label }) => (
-  <button className="flex items-center gap-2 px-3 py-1.5 bg-bg-tertiary/50 border border-border-subtle rounded-full text-sm text-text-primary hover:border-accent-primary/50 hover:bg-bg-tertiary transition-all duration-200">
-    {label}
-    <FaChevronDown className="text-xs opacity-60" />
-  </button>
-);
-
-const RegionBadge = ({ label, active }) => (
-  <button className={`flex items-center justify-center w-12 h-8 rounded-full border text-xs font-bold transition-all duration-200 ${
-    active
-      ? 'border-accent-primary/70 bg-accent-primary/20 text-accent-primary shadow-sm shadow-accent-primary/20'
-      : 'border-border-subtle bg-bg-tertiary/30 text-text-secondary hover:border-accent-primary/50 hover:text-text-primary hover:bg-bg-tertiary/50'
-  }`}>
-    {label}
+  <button className="flex items-center gap-2 px-4 py-2 bg-[#161b22] border border-white/5 rounded-full text-[11px] font-bold tracking-widest uppercase text-text-secondary hover:border-accent-primary/50 transition-all">
+    {label} <FaChevronDown className="text-[10px] opacity-40" />
   </button>
 );
 
 const rankMeta = {
-  Challenger:  { color: 'text-amber-400',   bg: 'bg-amber-500/10',   rowBg: 'bg-amber-500/[0.04]',   border: 'border-l-amber-500/60'   },
-  Grandmaster: { color: 'text-rose-400',    bg: 'bg-rose-500/10',    rowBg: 'bg-rose-500/[0.04]',    border: 'border-l-rose-500/60'    },
-  Master:      { color: 'text-violet-400',  bg: 'bg-violet-500/10',  rowBg: 'bg-violet-500/[0.04]',  border: 'border-l-violet-500/60'  },
-  Diamond:     { color: 'text-sky-400',     bg: 'bg-sky-500/10',     rowBg: 'bg-sky-500/[0.04]',     border: 'border-l-sky-500/60'     },
-  Emerald:     { color: 'text-emerald-400', bg: 'bg-emerald-500/10', rowBg: 'bg-emerald-500/[0.04]', border: 'border-l-emerald-500/60' },
-  Platinum:    { color: 'text-teal-400',    bg: 'bg-teal-500/10',    rowBg: 'bg-teal-500/[0.04]',    border: 'border-l-teal-500/60'    },
-  Gold:        { color: 'text-yellow-400',  bg: 'bg-yellow-500/10',  rowBg: 'bg-yellow-500/[0.04]',  border: 'border-l-yellow-500/60'  },
-};
-
-const getRankIcon = (rank, game) => {
-  const key = rank?.toLowerCase();
-  if (game === 'League of Legends') {
-    if (key === 'challenger')  return '/assets/ranks/lol/challenger.png';
-    if (key === 'grandmaster') return '/assets/ranks/lol/grandmaster.png';
-  }
-  if (game === 'Valorant') {
-    if (key === 'radiant')   return '/assets/ranks/valorant/radiant.png';
-    if (key === 'immortal3') return '/assets/ranks/valorant/immortal3.png';
-  }
-  if (game === 'CS2' || game === 'CS:GO') {
-    if (key === 'global elite') return '/assets/ranks/csgo/global-elite.png';
-  }
-  return null;
-};
-
-const positionLabel = (i) => {
-  if (i === 0) return { label: '1', color: 'text-amber-500', weight: 'font-bold' };
-  if (i === 1) return { label: '2', color: 'text-slate-400', weight: 'font-semibold' };
-  if (i === 2) return { label: '3', color: 'text-orange-500', weight: 'font-semibold' };
-  return { label: `${i + 1}`, color: 'text-text-secondary', weight: 'font-normal' };
+  Challenger:  { color: 'text-amber-400',   bg: 'bg-amber-500/10',   accent: '#f59e0b' },
+  Grandmaster: { color: 'text-rose-400',    bg: 'bg-rose-500/10',    accent: '#fb7185' },
+  Master:      { color: 'text-violet-400',  bg: 'bg-violet-500/10',  accent: '#a78bfa' },
+  Diamond:     { color: 'text-sky-400',     bg: 'bg-sky-500/10',     accent: '#38bdf8' },
+  Emerald:     { color: 'text-emerald-400', bg: 'bg-emerald-500/10', accent: '#34d399' },
+  Platinum:    { color: 'text-teal-400',    bg: 'bg-teal-500/10',    accent: '#2dd4bf' },
+  Gold:        { color: 'text-yellow-400',  bg: 'bg-yellow-500/10',  accent: '#fbbf24' },
 };
 
 const Rankings = () => {
   const { gamePlayers, activeGame } = useContext(GameContext);
   const [searchTerm, setSearchTerm] = useState('');
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  const getRankingHeaders = () => {
-    switch (activeGame) {
-      case 'League of Legends':
-        return ['#', 'Player', 'Team', 'Rank', 'LP', 'KDA'];
-      case 'Valorant':
-        return ['#', 'Player', 'Team', 'Rank', 'ACS', 'HS%'];
-      case 'CS2':
-        return ['#', 'Player', 'Team', 'Rank', 'ELO', 'ADR'];
-      default:
-        return ['#', 'Player', 'Team', 'Rank'];
-    }
-  };
+  // Memoized dynamic headers
+  const headers = useMemo(() => {
+    const base = ['#', 'Player', 'Team', 'Rank'];
+    const stats = {
+      'League of Legends': ['LP', 'KDA'],
+      'Valorant': ['ACS', 'HS%'],
+      'CS2': ['ELO', 'ADR'],
+    };
+    return [...base, ...(stats[activeGame] || [])];
+  }, [activeGame]);
 
-  const renderRankingRow = (player) => {
-    const cell = (val) => (
-      <td className="py-4 px-6 whitespace-nowrap text-sm font-medium text-text-primary">{val}</td>
-    );
-    switch (activeGame) {
-      case 'League of Legends':
-        return <>{cell(player.lp)}{cell(player.stats.kda)}</>;
-      case 'Valorant':
-        return <>{cell(player.stats.acs)}{cell(`${player.stats.hs_percent}%`)}</>;
-      case 'CS2':
-        return <>{cell(player.elo)}{cell(player.stats.adr)}</>;
-      default:
-        return null;
-    }
-  };
+  const filteredPlayers = gamePlayers.filter(p => 
+    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="container mx-auto p-4 md:p-6 lg:p-8 max-w-screen-xl">
-      {/* Header */}
-      <div className="flex items-start justify-between mb-5">
+    <div className="container mx-auto p-4 md:p-8 max-w-screen-xl min-h-screen bg-[#0b0f14]">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
         <div>
-          <h1 className="text-4xl font-extrabold font-headings text-text-primary tracking-tight">RANKINGS</h1>
-          <p className="text-sm text-text-secondary mt-1 font-medium">{gamePlayers.length} players</p>
+          <h1 className="text-5xl font-black text-white tracking-tighter italic">LEADERBOARD</h1>
+          <p className="text-[10px] font-bold tracking-[0.3em] text-text-secondary uppercase mt-2">
+            Global Rankings • {activeGame}
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <div className="relative">
+            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 text-xs" />
+            <input
+              type="text"
+              placeholder="SEARCH PLAYER..."
+              className="bg-[#161b22] border border-white/5 rounded-full py-2.5 pl-12 pr-6 text-[10px] font-bold tracking-widest text-white focus:outline-none focus:border-accent-primary/50 transition-all w-64"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <FilterDropdown label="Region" />
+          <FilterDropdown label="Rank" />
         </div>
       </div>
 
-      {/* Search + Filters Row 1 */}
-      <div className="flex items-center gap-3 mb-3 flex-wrap">
-        <div className="relative flex-grow max-w-sm">
-          <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary text-sm" />
-          <input
-            type="text"
-            placeholder="Search rankings..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="w-full bg-bg-secondary border border-border-subtle rounded-full py-2.5 pl-10 pr-4 text-sm text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all duration-200"
-          />
+      {/* Top 3 Spotlight Cards - Design inspired by your requested card style */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        {filteredPlayers.slice(0, 3).map((player, i) => {
+          const meta = rankMeta[player.rank] || { color: 'text-white', accent: '#fff' };
+          return (
+            <div key={player.tag} className="relative bg-[#161b22] p-6 rounded-xl border border-white/5 overflow-hidden group">
+               {/* Rank Number Graphic */}
+               <div className="absolute -right-4 -top-8 text-8xl font-black italic opacity-5 text-white group-hover:opacity-10 transition-opacity">
+                {i + 1}
+              </div>
+              
+              <div className="flex items-center gap-4 mb-6">
+                <div className="relative">
+                  <img src={player.avatar} className="w-16 h-16 rounded-full border-2 border-white/10 object-cover" alt="" />
+                  <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center bg-[#0b0f14] border border-white/10`}>
+                    <FaCrown className={i === 0 ? "text-amber-400" : "text-slate-400"} size={10} />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white leading-none">{player.name}</h3>
+                  <p className="text-[10px] font-bold text-text-secondary mt-1 tracking-widest uppercase">{player.team}</p>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                <div>
+                  <p className={`text-[9px] font-black tracking-widest uppercase mb-1 ${meta.color}`}>{player.rank}</p>
+                  <p className="text-lg font-black text-white tracking-tighter">
+                    {activeGame === 'League of Legends' ? `${player.lp} LP` : player.elo || player.stats.acs}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[9px] font-bold text-text-secondary uppercase mb-1">Performance</p>
+                  <p className="text-xs font-bold text-white">{player.stats.kda || player.stats.adr || player.stats.hs_percent + '%'}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Main Rankings Table */}
+      <div className="bg-[#161b22] rounded-xl border border-white/5 overflow-hidden shadow-2xl">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-black/20 border-b border-white/5">
+                {headers.map((h) => (
+                  <th key={h} className="py-5 px-6 text-[10px] font-black text-text-secondary uppercase tracking-[0.2em]">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/[0.03]">
+              {filteredPlayers.slice(3).map((player, i) => {
+                const meta = rankMeta[player.rank] || { color: 'text-text-secondary', bg: 'bg-white/5' };
+                return (
+                  <tr key={player.tag} className="hover:bg-white/[0.02] transition-colors group cursor-pointer">
+                    <td className="py-4 px-6 text-xs font-bold text-text-secondary italic">#{i + 4}</td>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-3">
+                        <img src={player.avatar} className="w-8 h-8 rounded-full border border-white/10" alt="" />
+                        <div>
+                          <p className="text-sm font-bold text-white group-hover:text-accent-primary transition-colors">{player.name}</p>
+                          <p className="text-[10px] text-text-secondary font-medium">#{player.tag}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <span className="text-[10px] font-bold bg-white/5 px-2 py-1 rounded text-text-secondary uppercase tracking-tighter">
+                        {player.team}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${meta.bg} ${meta.color}`}>
+                        {player.rank}
+                      </div>
+                    </td>
+                    {/* Dynamic Stat Cells */}
+                    <td className="py-4 px-6 text-sm font-black text-white tracking-tighter">
+                      {player.lp || player.elo || player.stats.acs}
+                    </td>
+                    <td className="py-4 px-6 text-sm font-medium text-text-secondary">
+                      {player.stats.kda || player.stats.adr || player.stats.hs_percent + '%'}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
-
-        <RegionBadge label="EUW" active={true} />
-        <RegionBadge label="ME" />
-        <FilterDropdown label="Team" />
-        <FilterDropdown label="Role" />
-      </div>
-
-      {/* Filters Row 2 */}
-      <div className="flex items-center gap-3 mb-6 flex-wrap">
-        <FilterDropdown label="Rank" />
-        <FilterDropdown label="LP Range" />
-
-        {/* Sort */}
-        <button className="flex items-center gap-2 px-4 py-1.5 bg-accent-primary bg-opacity-10 border border-accent-primary border-opacity-40 rounded-full text-sm text-text-primary font-semibold hover:bg-opacity-20 transition-all duration-200 ml-auto">
-          <MdSort className="text-base text-accent-primary" />
-          Rank: Highest
-          <FaChevronDown className="text-xs opacity-70" />
-        </button>
-      </div>
-
-      {/* Divider */}
-      <div className="h-px bg-border-subtle mb-6 opacity-50" />
-
-      {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-border-subtle bg-bg-tertiary">
-        <table className="min-w-full text-sm text-left">
-          <thead>
-            <tr className="bg-bg-primary/40 border-b border-border-subtle">
-              <th className="py-3.5 px-5 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wider w-14">#</th>
-              {getRankingHeaders().slice(1).map((header) => (
-                <th key={header} className="py-3.5 px-5 text-left text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border-subtle/40">
-            {gamePlayers.map((player, i) => {
-              const meta = rankMeta[player.rank] || { color: 'text-text-secondary', bg: 'bg-bg-tertiary', rowBg: '', border: 'border-l-border-subtle/30' };
-              const pos = positionLabel(i);
-              const rankIcon = getRankIcon(player.rank, activeGame);
-              return (
-                <tr
-                  key={player.tag}
-                  className="hover:bg-bg-primary/25 transition-colors duration-150 cursor-pointer"
-                >
-                  {/* Position */}
-                  <td className="py-4 px-5 whitespace-nowrap">
-                    <span className={`text-sm ${pos.weight} ${pos.color} tabular-nums`}>
-                      {pos.label}
-                    </span>
-                  </td>
-
-                  {/* Player */}
-                  <td className="py-4 px-5 whitespace-nowrap">
-                    <div className="flex items-center gap-3">
-                      <div className="relative shrink-0">
-                        <img className="w-8 h-8 rounded-full border border-border-subtle object-cover" src={player.avatar} alt={player.name} />
-                        {player.isPro && (
-                          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-bg-secondary" title="Pro Player" />
-                        )}
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-text-primary leading-tight">{player.name}</div>
-                        <div className="text-[11px] text-text-secondary mt-0.5">#{player.tag}</div>
-                      </div>
-                    </div>
-                  </td>
-
-                  {/* Team */}
-                  <td className="py-4 px-5 whitespace-nowrap">
-                    <span className="text-xs font-medium text-text-secondary px-2 py-1 rounded bg-bg-tertiary/60">
-                      {player.team}
-                    </span>
-                  </td>
-
-                  {/* Rank */}
-                  <td className="py-4 px-5 whitespace-nowrap">
-                    <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${meta.color} ${meta.bg}`}>
-                      {rankIcon
-                        ? <img src={rankIcon} alt={player.rank} className="w-4 h-4 object-contain" />
-                        : null
-                      }
-                      {player.rank}
-                    </div>
-                  </td>
-
-                  {renderRankingRow(player)}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
       </div>
     </div>
   );

@@ -1,66 +1,17 @@
 import React, { useState } from 'react';
 import { FaSearch, FaTrophy, FaChevronDown } from 'react-icons/fa';
-import { MdSort } from 'react-icons/md';
 
 const FilterDropdown = ({ label }) => (
-  <button className="flex items-center gap-2 px-3 py-1.5 bg-bg-tertiary/50 border border-border-subtle rounded-full text-sm text-text-primary hover:border-accent-primary/50 hover:bg-bg-tertiary transition-all duration-200">
-    {label}
-    <FaChevronDown className="text-xs opacity-60" />
-  </button>
-);
-
-const FilterToggle = ({ label }) => (
-  <button className="flex items-center gap-2 px-3 py-1.5 bg-bg-tertiary/50 border border-border-subtle rounded-full text-sm text-text-primary hover:border-accent-primary/50 hover:bg-bg-tertiary transition-all duration-200">
-    <span className="w-7 h-4 bg-bg-primary border border-border-subtle rounded-full relative flex-shrink-0">
-      <span className="absolute left-0.5 top-0.5 w-3 h-3 bg-slate-500 rounded-full"></span>
-    </span>
-    {label}
+  <button className="flex items-center gap-2 px-4 py-2 bg-[#161b22] border border-white/5 rounded-full text-[10px] font-bold tracking-widest uppercase text-text-secondary hover:border-accent-primary/50 transition-all">
+    {label} <FaChevronDown className="text-[10px] opacity-40" />
   </button>
 );
 
 const gameColors = {
-  'League of Legends': {
-    text: 'text-amber-400',
-    bg: 'bg-amber-500/10',
-    border: 'border-amber-500/30',
-    topBar: 'from-amber-500 to-amber-700',
-    gradient: 'from-amber-950/50 via-bg-tertiary/30 to-bg-secondary',
-    trophy: 'text-amber-400',
-  },
-  'Valorant': {
-    text: 'text-rose-400',
-    bg: 'bg-rose-500/10',
-    border: 'border-rose-500/30',
-    topBar: 'from-rose-500 to-rose-700',
-    gradient: 'from-rose-950/50 via-bg-tertiary/30 to-bg-secondary',
-    trophy: 'text-rose-400',
-  },
-  'CS:GO': {
-    text: 'text-orange-400',
-    bg: 'bg-orange-500/10',
-    border: 'border-orange-500/30',
-    topBar: 'from-orange-500 to-orange-700',
-    gradient: 'from-orange-950/50 via-bg-tertiary/30 to-bg-secondary',
-    trophy: 'text-orange-400',
-  },
-  'CS2': {
-    text: 'text-orange-400',
-    bg: 'bg-orange-500/10',
-    border: 'border-orange-500/30',
-    topBar: 'from-orange-500 to-orange-700',
-    gradient: 'from-orange-950/50 via-bg-tertiary/30 to-bg-secondary',
-    trophy: 'text-orange-400',
-  },
-};
-
-const TeamInitials = ({ name, game }) => {
-  const colors = gameColors[game] || { text: 'text-text-primary', bg: 'bg-bg-tertiary', border: 'border-border-subtle' };
-  const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-  return (
-    <div className={`w-14 h-14 rounded-2xl ${colors.bg} border ${colors.border} flex items-center justify-center shrink-0 shadow-md`}>
-      <span className={`text-xl font-black ${colors.text} tracking-tight`}>{initials}</span>
-    </div>
-  );
+  'League of Legends': { text: 'text-amber-400', accent: '#f59e0b' },
+  'Valorant': { text: 'text-rose-400', accent: '#fb7185' },
+  'CS:GO': { text: 'text-orange-400', accent: '#fb923c' },
+  'CS2': { text: 'text-orange-400', accent: '#fb923c' },
 };
 
 const teamsData = [
@@ -68,24 +19,81 @@ const teamsData = [
     name: 'Tunisian Talons',
     game: 'League of Legends',
     roster: ['Shadow', 'Blaze', 'Vortex', 'Rift', 'Nova'],
-    achievements: '1st Place - Tunisian Esports Masters 2025',
+    achievements: 'Tunisian Masters 2025',
     wins: 24, losses: 6,
   },
   {
     name: 'Carthage Eagles',
     game: 'Valorant',
     roster: ['Ghost', 'Spectre', 'Phantom', 'Vandal', 'Operator'],
-    achievements: 'Champions - North Africa Invitational 2025',
+    achievements: 'North Africa Invitational',
     wins: 18, losses: 9,
   },
   {
     name: 'Desert Lions',
     game: 'CS:GO',
     roster: ['Sandstorm', 'Dune', 'Mirage', 'Oasis', 'Pyramid'],
-    achievements: 'Finalists - MENA League 2025',
+    achievements: 'MENA League 2025',
     wins: 15, losses: 12,
   },
 ];
+
+const TeamCard = ({ team }) => {
+  const colors = gameColors[team.game] || { text: 'text-text-primary', accent: '#3f3f46' };
+  const initials = team.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+
+  return (
+    <div className="relative group bg-[#161b22] p-8 rounded-xl flex flex-col justify-between aspect-square overflow-hidden border border-white/5 hover:border-white/20 transition-all duration-300 shadow-xl">
+      
+      {/* Background Aesthetic (from image_1bbe24.jpg) */}
+      <div 
+        className="absolute bottom-0 right-0 w-36 h-36 opacity-10 transition-transform group-hover:scale-110 duration-700 pointer-events-none"
+        style={{
+          background: `radial-gradient(circle at bottom right, ${colors.accent}, transparent 70%)`,
+          maskImage: 'repeating-linear-gradient(-45deg, black, black 1px, transparent 1px, transparent 12px)',
+          WebkitMaskImage: 'repeating-linear-gradient(-45deg, black, black 1px, transparent 1px, transparent 12px)'
+        }}
+      />
+
+      {/* Top row: Placeholder Logo & Tag */}
+      <div className="flex justify-between items-start z-10">
+        <div className="w-14 h-14 rounded-2xl bg-black/40 border border-white/10 flex items-center justify-center shadow-inner overflow-hidden">
+          {/* Logo Placeholder */}
+          <div className="relative w-full h-full flex items-center justify-center">
+             <span className={`text-2xl font-black opacity-20 absolute ${colors.text}`}>{initials}</span>
+             <div className={`w-8 h-8 rounded-full border-2 border-dashed opacity-40 ${colors.text.replace('text', 'border')}`} />
+          </div>
+        </div>
+        <span className="text-[10px] text-text-secondary font-black tracking-widest opacity-50">
+          EST. 2026
+        </span>
+      </div>
+
+      {/* Middle row: Brand & Info */}
+      <div className="z-10">
+        <p className={`text-[10px] font-black tracking-[0.3em] uppercase mb-2 ${colors.text}`}>
+          {team.game}
+        </p>
+        <h3 className="text-2xl font-bold text-white leading-tight tracking-tighter">
+          {team.name}
+        </h3>
+        <div className="flex gap-2 mt-4">
+          <div className="px-2 py-1 bg-white/5 rounded text-[9px] font-bold text-text-secondary uppercase tracking-tighter">
+            {team.wins}W - {team.losses}L
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom row: Achievement */}
+      <div className="z-10 pt-4 border-t border-white/5 flex items-center gap-3">
+        <FaTrophy className={`text-[10px] ${colors.text}`} />
+        <span className="text-[10px] text-white/60 uppercase font-bold tracking-widest truncate">
+          {team.achievements}
+        </span>
+      </div>
+    </div>
+  );
+};
 
 const Teams = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -96,103 +104,39 @@ const Teams = () => {
       {/* Header */}
       <div className="flex items-start justify-between mb-5">
         <div>
-          <h1 className="text-4xl font-extrabold font-headings text-text-primary tracking-tight">TEAMS</h1>
-          <p className="text-sm text-text-secondary mt-1 font-medium">{teamsData.length} teams</p>
+          <h1 className="text-5xl font-black text-white tracking-tighter italic">TEAMS</h1>
+          <p className="text-[10px] font-bold tracking-[0.3em] text-text-secondary uppercase mt-2">
+            Regional Organizations • {teamsData.length} Teams
+          </p>
         </div>
       </div>
 
-      {/* Search + Filters Row 1 */}
-      <div className="flex items-center gap-3 mb-3 flex-wrap">
-        <div className="relative flex-grow max-w-sm">
-          <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary text-sm" />
+      {/* Search + Filters */}
+      <div className="flex flex-wrap gap-3 mb-6">
+        <div className="relative">
+          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 text-xs" />
           <input
             type="text"
-            placeholder="Search teams..."
+            placeholder="SEARCH TEAMS..."
             value={searchTerm}
             onChange={handleSearchChange}
-            className="w-full bg-bg-secondary border border-border-subtle rounded-full py-2.5 pl-10 pr-4 text-sm text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent transition-all duration-200"
+            className="bg-[#161b22] border border-white/5 rounded-full py-2.5 pl-12 pr-6 text-[10px] font-bold tracking-widest text-white focus:outline-none focus:border-accent-primary/50 transition-all w-64"
           />
         </div>
-
         <FilterDropdown label="Game" />
         <FilterDropdown label="Region" />
-        <FilterToggle label="Top Teams Only" />
-      </div>
-
-      {/* Filters Row 2 */}
-      <div className="flex items-center gap-3 mb-6 flex-wrap">
         <FilterDropdown label="Win Rate" />
-
-        {/* Sort */}
-        <button className="flex items-center gap-2 px-4 py-1.5 bg-accent-primary bg-opacity-10 border border-accent-primary border-opacity-40 rounded-full text-sm text-text-primary font-semibold hover:bg-opacity-20 transition-all duration-200 ml-auto">
-          <MdSort className="text-base text-accent-primary" />
-          Win Rate: Highest
-          <FaChevronDown className="text-xs opacity-70" />
-        </button>
       </div>
 
-      {/* Divider */}
-      <div className="h-px bg-border-subtle mb-6 opacity-50" />
 
-      {/* Teams Grid */}
+
+      <div className="h-px bg-border-subtle mb-8 opacity-20" />
+
+      {/* Teams Grid with Spacing */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {teamsData.map((team, index) => {
-          const colors = gameColors[team.game] || { text: 'text-text-primary', bg: 'bg-bg-tertiary' };
-          const winRate = team.wins ? Math.round((team.wins / (team.wins + team.losses)) * 100) : null;
-          return (
-            <div
-              key={index}
-              className="bg-bg-tertiary border border-border-subtle rounded-xl overflow-hidden hover:-translate-y-1.5 hover:shadow-lg transition-all duration-200 cursor-pointer group"
-            >
-              {/* Header */}
-              <div className="px-5 pt-5 pb-4 flex items-start justify-between border-b border-border-subtle/40">
-                <div className="flex-1 min-w-0">
-                  <span className="text-[10px] font-bold tracking-widest uppercase text-text-secondary opacity-70">{team.game}</span>
-                  <h3 className="text-base font-bold text-text-primary font-headings leading-tight mt-1 truncate pr-3">{team.name}</h3>
-                </div>
-                <TeamInitials name={team.name} game={team.game} />
-              </div>
-
-              {/* Content */}
-              <div className="px-5 pb-5 pt-4 border-t border-border-subtle/40">
-                {/* Win/Loss */}
-                {winRate !== null && (
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <div className="flex items-center gap-2 text-xs font-medium">
-                        <span className="text-emerald-400">{team.wins}W</span>
-                        <span className="text-border-subtle">/</span>
-                        <span className="text-rose-400">{team.losses}L</span>
-                      </div>
-                      <span className={`text-xs font-bold ${colors.text}`}>{winRate}%</span>
-                    </div>
-                    <div className="h-1.5 bg-bg-tertiary rounded-full overflow-hidden">
-                      <div
-                        className={`h-full bg-gradient-to-r ${colors.topBar} rounded-full transition-all duration-500`}
-                        style={{ width: `${winRate}%` }}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Roster */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {team.roster.map((member) => (
-                    <span key={member} className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-bg-tertiary/60 text-text-secondary border border-border-subtle/40 hover:text-text-primary transition-colors">
-                      {member}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Achievement */}
-                <div className="flex items-start gap-2 text-xs rounded-lg p-2.5 bg-bg-primary/40 border border-border-subtle/50">
-                  <FaTrophy className="flex-shrink-0 mt-0.5 text-text-secondary" />
-                  <span className="text-text-secondary font-medium leading-snug">{team.achievements}</span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {teamsData.map((team, index) => (
+          <TeamCard key={index} team={team} />
+        ))}
       </div>
     </div>
   );
