@@ -4,7 +4,7 @@ import { GameContext } from '../contexts/GameContext';
 import { FaSearch, FaLock } from 'react-icons/fa';
 
 const GameSelectionCard = () => {
-  const { setActiveGame, theme } = useContext(GameContext);
+  const { setActiveGame } = useContext(GameContext);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -51,7 +51,7 @@ const GameSelectionCard = () => {
             }}
         >
           {filteredGames.map((game) => (
-            <li key={game.name}>
+            <li  key={game.name}>
               <button
                 onClick={() => handleGameSelect(game)}
                 disabled={!game.available}

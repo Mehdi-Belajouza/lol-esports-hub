@@ -23,12 +23,12 @@ const Dashboard = () => {
       <Header />
       <main className="flex-grow">
         <SecondaryNav />
-        <div className="container mx-auto max-w-screen-xl p-4 md:p-6 lg:p-8 flex space-x-8">
-          <div className="flex-grow">
-            {activeView === 'Players' && <PlayerList />}
-            {activeView === 'Rankings' && <Rankings />}
-            {activeView === 'Teams' && <Teams />}
-          </div>
+        <div className="container mx-auto max-w-screen-xl">
+          {activeView === 'Players' && <PlayerList />}
+          {activeView === 'Rankings' && <Rankings />}
+          {activeView === 'Teams' && <Teams />}
+        </div>
+        <div className="container mx-auto max-w-screen-xl px-4 md:px-6 lg:px-8 py-6">
           <AdPlaceholder />
         </div>
       </main>

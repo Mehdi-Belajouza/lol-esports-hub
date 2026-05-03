@@ -3,9 +3,9 @@ import './AdPlaceholder.css';
 
 const AdPlaceholder = () => {
   return (
-    <div className="hidden lg:block w-48 flex-shrink-0">
-        <div className="landscape-card">
-          <div className="landscape-section">
+    <div className="w-full">
+      <div className="landscape-card-horizontal">
+        <div className="landscape-section">
             <div className="sky"></div>
             <div className="sun"></div>
             <div className="hill-1"></div>

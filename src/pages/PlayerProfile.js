@@ -11,7 +11,7 @@ import Breadcrumb from '../components/Breadcrumb';
 
 const PlayerProfile = () => {
   const { tag } = useParams();
-  const { activeGame, theme } = useContext(GameContext);
+  const { theme } = useContext(GameContext);
   const navigate = useNavigate();
 
   // Find the player across all games

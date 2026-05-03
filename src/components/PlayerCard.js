@@ -92,10 +92,10 @@ const PlayerCard = ({ player }) => {
           <img
             src={rankImg}
             alt={player.rank}
-            className="h-16 w-16 object-contain drop-shadow-lg group-hover:scale-110 transition-transform duration-200"
+            className="h-20 w-20 object-contain drop-shadow-lg group-hover:scale-110 transition-transform duration-200"
           />
         ) : (
-          <div className="h-16 w-16 rounded-full bg-bg-primary border border-border-subtle flex items-center justify-center">
+          <div className="h-20 w-20 rounded-full bg-bg-primary border border-border-subtle flex items-center justify-center">
             <span className="text-xs text-text-secondary font-bold">{player.rank?.charAt(0)}</span>
           </div>
         )}
@@ -117,7 +117,7 @@ const PlayerCard = ({ player }) => {
       <div className="relative z-10 px-4 pb-4">
         <div className="flex items-end gap-3 -mt-6 mb-3">
           <img
-            className="w-12 h-12 rounded-full border-2 border-border-subtle ring-2 ring-bg-secondary object-cover flex-shrink-0"
+            className="w-16 h-16 rounded-full border-2 border-border-subtle ring-2 ring-bg-secondary object-cover flex-shrink-0"
             src={player.avatar}
             alt={player.name}
           />

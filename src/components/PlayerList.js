@@ -1,20 +1,20 @@
 import React, { useContext, useState } from 'react';
 import PlayerCard from './PlayerCard';
 import { GameContext } from '../contexts/GameContext';
-import { FaChevronLeft, FaChevronRight, FaSearch, FaChevronDown, FaBars, FaToggleOff } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaSearch, FaChevronDown } from 'react-icons/fa';
 import { MdSort } from 'react-icons/md';
 
 const FilterToggle = ({ label }) => (
-  <button className="flex items-center gap-2 px-3 py-1.5 bg-bg-secondary border border-border-subtle rounded-full text-sm text-text-secondary hover:border-accent-primary hover:text-text-primary transition-all duration-200">
+  <button className="flex items-center gap-2 px-3 py-1.5 bg-bg-tertiary/50 border border-border-subtle rounded-full text-sm text-text-primary hover:border-accent-primary/50 hover:bg-bg-tertiary transition-all duration-200">
     <span className="w-7 h-4 bg-bg-primary border border-border-subtle rounded-full relative flex-shrink-0">
-      <span className="absolute left-0.5 top-0.5 w-3 h-3 bg-gray-500 rounded-full"></span>
+      <span className="absolute left-0.5 top-0.5 w-3 h-3 bg-slate-500 rounded-full"></span>
     </span>
     {label}
   </button>
 );
 
 const FilterDropdown = ({ label }) => (
-  <button className="flex items-center gap-2 px-3 py-1.5 bg-bg-secondary border border-border-subtle rounded-full text-sm text-text-secondary hover:border-accent-primary hover:text-text-primary transition-all duration-200">
+  <button className="flex items-center gap-2 px-3 py-1.5 bg-bg-tertiary/50 border border-border-subtle rounded-full text-sm text-text-primary hover:border-accent-primary/50 hover:bg-bg-tertiary transition-all duration-200">
     {label}
     <FaChevronDown className="text-xs opacity-60" />
   </button>
@@ -23,8 +23,8 @@ const FilterDropdown = ({ label }) => (
 const RegionBadge = ({ label, active }) => (
   <button className={`flex items-center justify-center w-12 h-8 rounded-full border text-xs font-bold transition-all duration-200 ${
     active
-      ? 'border-accent-primary bg-accent-primary bg-opacity-15 text-text-primary shadow-sm shadow-accent-primary/30'
-      : 'border-border-subtle bg-bg-secondary text-text-secondary hover:border-accent-primary hover:text-text-primary'
+      ? 'border-accent-primary/70 bg-accent-primary/20 text-accent-primary shadow-sm shadow-accent-primary/20'
+      : 'border-border-subtle bg-bg-tertiary/30 text-text-secondary hover:border-accent-primary/50 hover:text-text-primary hover:bg-bg-tertiary/50'
   }`}>
     {label}
   </button>

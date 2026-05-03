@@ -5,6 +5,7 @@ import RisingPlayers from '../components/RisingPlayers';
 import TopPlayersThisWeek from '../components/TopPlayersThisWeek';
 import GameSpotlight from '../components/GameSpotlight';
 import ScrollAnimationWrapper from '../components/ScrollAnimationWrapper';
+import SectionDivider from '../components/SectionDivider';
 import { GameContext } from '../contexts/GameContext';
 import GameSelectionCard from '../components/GameSelectionCard';
 
@@ -77,9 +78,11 @@ const Home = () => {
       <ScrollAnimationWrapper>
         <RisingPlayers />
       </ScrollAnimationWrapper>
+      <SectionDivider />
       <ScrollAnimationWrapper>
         <TopPlayersThisWeek />
       </ScrollAnimationWrapper>
+      <SectionDivider />
       <ScrollAnimationWrapper>
         <GameSpotlight />
       </ScrollAnimationWrapper>
